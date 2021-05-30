@@ -1,0 +1,8 @@
+{
+    "LFGeneratorMax": 100,
+    "LFGeneratorMin": 20,
+    "HFGeneratorFs": 6600,
+    "HFPopAndComputeStatisticsLowfiltercut": 2,
+    "HFPopAndComputeStatisticsNyquistcond": 2
+
+}
