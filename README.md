@@ -1,4 +1,4 @@
-# SkeletonC
+# SkeletonC-lightDSP
 
 ## Idea
 
@@ -9,7 +9,7 @@ My idea is to put together the basic tools to create a skeleton project in C. Th
 - Logger
 - Circular buffer
 - JSON config
-- MQTT 
+- lightDSP (FFT iFFT Statistics)
 
 Time permitting, I'll add more ...
 MD Syntax Guide: https://www.markdownguide.org/basic-syntax/ 
@@ -23,7 +23,7 @@ Available architectures:
 
 ### Linux Requirements
 ```
-apt install texinfo build-essential manpages-dev cmake gnuplot
+apt install texinfo build-essential manpages-dev make
 ```
 
 ## Compile and Run
