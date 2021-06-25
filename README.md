@@ -1,4 +1,4 @@
-# SkeletonC-lightDSP
+# Skeleton
 
 ## Idea
 
