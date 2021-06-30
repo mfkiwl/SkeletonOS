@@ -7,10 +7,10 @@
 typedef struct
 {
 	void *const buffer;
-	uint16_t push_count;
-	uint16_t pop_count;
-	uint16_t const size;
-	uint16_t const element_size;
+	uint64_t push_count;
+	uint64_t pop_count;
+	uint64_t const size;
+	uint64_t const element_size;
 } circ_gbuf_t;
 
 #define __CIRC_GBUF_V_DEF(type, buf, sz) \
