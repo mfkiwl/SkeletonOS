@@ -52,7 +52,8 @@ int config_read_double(const char *key, double *value)
 {
 	json_t const *element = JSON_GET_PROPERTY(jsonConfig, key);
 
-	if (!element || JSON_REAL != JSON_GET_PROPERTY_TYPE(element))
+	// the element can be also an integer, but we want to read it as a double
+	if (!element || (JSON_REAL != JSON_GET_PROPERTY_TYPE(element) && JSON_INTEGER != JSON_GET_PROPERTY_TYPE(element)))
 	{
 		// printf("Error, the element property is not found.\n");
 		LOGGER_ERROR("Error, the element \"%s\" is not found.\n", key);

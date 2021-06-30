@@ -38,6 +38,17 @@ char const *json_getPropertyValue(json_t const *obj, char const *property)
 	return json_getValue(field);
 }
 
+double json_getReal(json_t const *property)
+{
+	for (uint16_t index = 0; property->u.value[index] != 0; index += 1)
+	{
+		if (property->u.value[index] == '.') {
+			return atof(property->u.value);
+		}
+	}
+	return 0.0 + atoll(property->u.value);
+}
+
 /* Internal prototypes: */
 static char *goBlank(char *str);
 static char *goNum(char *str);
