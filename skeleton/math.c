@@ -398,6 +398,26 @@ double maxValue(double *input, uint64_t size)
 }
 
 /**
+ * input: input - an array of double on which found the min value
+ * size: input - the size of the array
+ * return: the minimum value
+ */
+double minValue(double *input, uint64_t size)
+{
+	double minValue = input[0];
+
+	for (uint64_t i = 1; i < size; i += 1)
+	{
+		if (input[i] < minValue)
+		{
+			minValue = input[i];
+		}
+	}
+
+	return minValue;
+}
+
+/**
  * input: input - an array of double on which found the max value
  * size: input - the size of the array
  * return: the rms calculated

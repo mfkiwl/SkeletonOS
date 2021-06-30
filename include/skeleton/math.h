@@ -67,6 +67,13 @@ extern double kurtosis(double *input, uint64_t size);
 extern double maxValue(double *input, uint64_t size);
 
 /**
+ * input: input - an array of double on which found the min value
+ * size: input - the size of the array
+ * return: the minimum value
+ */
+double minValue(double *input, uint64_t size);
+
+/**
  * input: input - an array of double on which found the max value
  * size: input - the size of the array
  * return: the rms calculated
