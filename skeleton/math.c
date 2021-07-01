@@ -255,7 +255,7 @@ int fftGetSingleSided(COMPLEX *ds_fft, uint32_t N, double *ss_fft, uint32_t *siz
 // Statistic functions
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the standard deviation value
  */
@@ -281,7 +281,7 @@ double standardDeviation(double *input, uint64_t size)
 }
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the variance value
  */
@@ -307,7 +307,7 @@ double variance(double *input, uint64_t size)
 }
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the skewness value
  */
@@ -342,7 +342,7 @@ double skewness(double *input, uint64_t size)
 }
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the kurtosis value
  */
@@ -378,7 +378,7 @@ double kurtosis(double *input, uint64_t size)
 }
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the maximum value
  */
@@ -398,7 +398,7 @@ double maxValue(double *input, uint64_t size)
 }
 
 /**
- * input: input - an array of double on which found the min value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the minimum value
  */
@@ -418,7 +418,7 @@ double minValue(double *input, uint64_t size)
 }
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the rms calculated
  */
@@ -437,7 +437,7 @@ double rms(double *input, uint64_t size)
 }
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the crest factor value
  */
@@ -468,7 +468,7 @@ double crestFactor(double *input, uint64_t size)
 }
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the mean calculated
  */

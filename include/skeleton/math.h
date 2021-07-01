@@ -32,35 +32,35 @@ extern int fftGetSingleSided(COMPLEX *ds_fft, uint32_t N, double *ss_fft, uint32
 // Statistic Functions
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the standard deviation value
  */
 extern double standardDeviation(double *input, uint64_t size);
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the variance value
  */
 extern double variance(double *input, uint64_t size);
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the skewness value
  */
 extern double skewness(double *input, uint64_t size);
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the kurtosis value
  */
 extern double kurtosis(double *input, uint64_t size);
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the maximum value
  */
@@ -74,21 +74,21 @@ extern double maxValue(double *input, uint64_t size);
 double minValue(double *input, uint64_t size);
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the rms calculated
  */
 extern double rms(double *input, uint64_t size);
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the crest factor value
  */
 extern double crestFactor(double *input, uint64_t size);
 
 /**
- * input: input - an array of double on which found the max value
+ * input: input - an array of double
  * size: input - the size of the array
  * return: the mean calculated
  */
