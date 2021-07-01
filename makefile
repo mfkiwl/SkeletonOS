@@ -18,6 +18,18 @@ $(SKELETON): $(OBJ_CORE) $(OBJ_MODEL) $(SKELETON).o
 
 all: SKELETON
 
+LIB_OUTPUT_DIR=lib
+LIB_NAME=libSkeleton
+
+LIB=lib
+
+$(LIB): $(OBJ_CORE)
+	mkdir -p $(LIB_OUTPUT_DIR)
+	$(AR) rvs $(LIB_NAME).a $^
+	mv $(LIB_NAME).a $(LIB_OUTPUT_DIR)/
+	cp $(INCLUDE)/skeleton/*.h $(LIB_OUTPUT_DIR)/
+
+
 .PHONY: clean
 
 CLEAN_LIST += $(OBJ_CORE) $(OBJ_MODEL) $(SKELETON) $(SKELETON).o \

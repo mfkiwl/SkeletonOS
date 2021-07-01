@@ -57,4 +57,5 @@ dkms.conf
 /data/binary
 /data/
 .DS_Store
+lib/*
 
