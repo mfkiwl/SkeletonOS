@@ -605,6 +605,54 @@ void jW_End_obj(char *JS, int *JS_len)
 }
 
 /************************************************************************
+** function name: jW_Start_array
+** function description: start the array. Do nothing
+** inputs: -JS : json string buffer
+		   -JS_start: 
+** output: None
+************************************************************************/
+void jW_Start_array(char *JS, int *JS_start)
+{
+	return;
+}
+
+/************************************************************************
+** function name: jW_End_array
+** function description: close the array. Remove last ,
+** inputs: -JS : json string buffer
+		   -JS_len:
+** output: None
+************************************************************************/
+void jW_End_array(char *JS, int *JS_len)
+{
+	(*JS_len) = (*JS_len) - 1;
+	JS[(*JS_len)] = '\0';
+	return;
+}
+
+/************************************************************************
+** function name: jW_Object_add_to_array
+** function description: add the object to an array
+** inputs: -key: attribute always string
+		   -value: value ofthe object to add and it must be object_string
+		   -JS: json string buffer
+		   -JS_idx: current index of JS
+** output: None
+************************************************************************/
+void jW_Object_add_to_array(char *value, char *JS, int *JS_idx)
+{
+	static int idx;
+	int value_len = strlen(value);
+
+	for (idx = 0; idx < (value_len); idx++, (*JS_idx)++)
+	{
+		JS[(*JS_idx)] = value[idx];
+	}
+
+	JS[(*JS_idx)++] = ',';
+}
+
+/************************************************************************
 ** function name: jW_String
 ** function description: add key and value of string token in JS
 ** inputs: -key: attribute always string

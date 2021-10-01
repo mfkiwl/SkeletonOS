@@ -19,27 +19,28 @@ struct Element
 
 struct LFStatistics
 {
-    double avg;
-    double max;
-    double min;
+	double avg;
+	double max;
+	double min;
 };
 
 struct Config
 {
 	int LFGeneratorMax;
-    int LFGeneratorMin;
-    int HFGeneratorFs;
-    int HFPopAndComputeStatisticsLowfiltercut;
-    int HFPopAndComputeStatisticsNyquistcond;
+	int LFGeneratorMin;
+	int HFGeneratorFs;
+	int HFPopAndComputeStatisticsLowfiltercut;
+	int HFPopAndComputeStatisticsNyquistcond;
 };
 struct Config config;
 
-void internalConfigInit(){
+void internalConfigInit()
+{
 	CONFIG_READ_INTEGER("LFGeneratorMax", &config.LFGeneratorMax);
 	CONFIG_READ_INTEGER("LFGeneratorMin", &config.LFGeneratorMin);
-	CONFIG_READ_INTEGER("HFGeneratorFs",  &config.HFGeneratorFs);
+	CONFIG_READ_INTEGER("HFGeneratorFs", &config.HFGeneratorFs);
 	CONFIG_READ_INTEGER("HFPopAndComputeStatisticsLowfiltercut", &config.HFPopAndComputeStatisticsLowfiltercut);
-	CONFIG_READ_INTEGER("HFPopAndComputeStatisticsNyquistcond",  &config.HFPopAndComputeStatisticsNyquistcond);
+	CONFIG_READ_INTEGER("HFPopAndComputeStatisticsNyquistcond", &config.HFPopAndComputeStatisticsNyquistcond);
 }
 
 circ_gbuf_t cBufHFData;
@@ -83,25 +84,25 @@ int HFGenerator()
 
 	struct Element element;
 	element.timestamp = GET_TIMESTAMP();
-    
+
 	const int fs = config.HFGeneratorFs;
 
-    double input[SIN_WAVE_SIZE];
-    
-	for (int i = 0; i < SIN_WAVE_SIZE; i += 1) 
-	{	
-	    //signal test
-		input[i] = SIN_WAVE(1, 200, 5, (double)i/fs) + SIN_WAVE(10, 800, 0, (double)i/fs) + SIN_WAVE(1, 1000, 2, (double)i/fs);
-		
+	double input[SIN_WAVE_SIZE];
+
+	for (int i = 0; i < SIN_WAVE_SIZE; i += 1)
+	{
+		//signal test
+		input[i] = SIN_WAVE(1, 200, 5, (double)i / fs) + SIN_WAVE(10, 800, 0, (double)i / fs) + SIN_WAVE(1, 1000, 2, (double)i / fs);
+
 		element.value = input[i];
-		
+
 		int slotFull = CBUF_HFDATA_SIZE - CIRC_GBUF_FS(cBufHFData);
-	    LOGGER_TRACE("HF Data Generator - slot full: %d\n", slotFull);
-	    
-	    if (CIRC_GBUF_PUSH(cBufHFData, &element) == 0)
-	    {
-		    LOGGER_TRACE("HF Data Generator cBuf data push: %" PRId64 " : %f\n", element.timestamp, element.value);
-	    }
+		LOGGER_TRACE("HF Data Generator - slot full: %d\n", slotFull);
+
+		if (CIRC_GBUF_PUSH(cBufHFData, &element) == 0)
+		{
+			LOGGER_TRACE("HF Data Generator cBuf data push: %" PRId64 " : %f\n", element.timestamp, element.value);
+		}
 	}
 
 	return 0;
@@ -112,10 +113,10 @@ int HFGenerator()
 int HFPopAndComputeStatistics()
 {
 	LOGGER_TRACE("HF Pop and Compute Statistics Task\n");
-	
+
 	struct Element element;
-    static COMPLEX HFSignalComplex[HFPOP_WINDOW];
-	
+	static COMPLEX HFSignalComplex[HFPOP_WINDOW];
+
 	int slotFull = CBUF_HFDATA_SIZE - CIRC_GBUF_FS(cBufHFData);
 	LOGGER_TRACE("HF Pop and Compute Statistics Task - slot full: %d\n", slotFull);
 
@@ -125,45 +126,47 @@ int HFPopAndComputeStatistics()
 		{
 			if (CIRC_GBUF_POP(cBufHFData, &element) == 0)
 			{
-				LOGGER_TRACE("HF Pop and Compute Statistics Task pop: %"PRIu64": %f\n", element.timestamp, element.value);
+				LOGGER_TRACE("HF Pop and Compute Statistics Task pop: %" PRIu64 ": %f\n", element.timestamp, element.value);
 				HFSignalComplex[i].real = element.value;
-				HFSignalComplex[i].imag  = 0.0; 
+				HFSignalComplex[i].imag = 0.0;
 			}
 		}
 	}
 	else
 	{
-	    LOGGER_TRACE("HF Pop and Compute Statistics Task: Waiting Windows Full\n");
-	    return 1;
+		LOGGER_TRACE("HF Pop and Compute Statistics Task: Waiting Windows Full\n");
+		return 1;
 	}
-	
+
 	fft_real(HFSignalComplex, HFPOP_WINDOW);
 
 	const int lowFilterCut = config.HFPopAndComputeStatisticsLowfiltercut;
-	
+
 	// eliminate DC component
-	for (int i = 0; i < lowFilterCut; ++i) {
+	for (int i = 0; i < lowFilterCut; ++i)
+	{
 		HFSignalComplex[i].real = 0;
 		HFSignalComplex[i].imag = 0;
 	}
-	
+
 	const int nyquistCondition = config.HFPopAndComputeStatisticsNyquistcond;
 	const unsigned long lNyquist = FLOAT_TO_INT(HFPOP_WINDOW / nyquistCondition);
-	
+
 	double singleSidedFFT[HFPOP_WINDOW / 2];
 	uint32_t size = 0;
-	
+
 	fftGetSingleSided(HFSignalComplex, HFPOP_WINDOW, singleSidedFFT, &size);
-	
+
 	// plot to singleSidedFFT ! TODO
-	
+
 	ifft_real(HFSignalComplex, HFPOP_WINDOW);
-	
+
 	static double HFSignalFiltered[HFPOP_WINDOW];
-	for (int i = 0; i < HFPOP_WINDOW; i++){
-	    HFSignalFiltered[i] = HFSignalComplex[i].real;
+	for (int i = 0; i < HFPOP_WINDOW; i++)
+	{
+		HFSignalFiltered[i] = HFSignalComplex[i].real;
 	}
-	
+
 	double std = standardDeviation(HFSignalFiltered, HFPOP_WINDOW);
 	double var = variance(HFSignalFiltered, HFPOP_WINDOW);
 	double ske = skewness(HFSignalFiltered, HFPOP_WINDOW);
@@ -171,7 +174,7 @@ int HFPopAndComputeStatistics()
 	double max = maxValue(HFSignalFiltered, HFPOP_WINDOW);
 	double sqr = rms(HFSignalFiltered, HFPOP_WINDOW);
 	double cfa = crestFactor(HFSignalFiltered, HFPOP_WINDOW);
-	
+
 	LOGGER_DEBUG("\
     HF Pop and Compute Statistics Task: \
     standard deviation:%.5f; \
@@ -181,7 +184,7 @@ int HFPopAndComputeStatistics()
     max:%.5f; \
     rms:%.5f; \
     crest factor:%.5f;\n",
-	std, var, ske, kur, max, sqr, cfa);
+							 std, var, ske, kur, max, sqr, cfa);
 
 	return 0;
 }
@@ -191,12 +194,12 @@ int HFPopAndComputeStatistics()
 int LFPopAndComputeStatistics()
 {
 
-    LOGGER_TRACE("LF Pop and Compute Statistics Task\n");
-	
+	LOGGER_TRACE("LF Pop and Compute Statistics Task\n");
+
 	struct Element element;
 	static double avg, max;
 	static double min = 16384.0; // high number is better
-	
+
 	int slotFull = CBUF_LFDATA_SIZE - CIRC_GBUF_FS(cBufLFData);
 	LOGGER_TRACE("LF Pop and Compute Statistics Task - slot full: %d\n", slotFull);
 
@@ -206,7 +209,7 @@ int LFPopAndComputeStatistics()
 		{
 			if (CIRC_GBUF_POP(cBufLFData, &element) == 0)
 			{
-				LOGGER_TRACE("LF Pop and Compute Statistics Task pop: %"PRIu64": %f\n", element.timestamp, element.value);
+				LOGGER_TRACE("LF Pop and Compute Statistics Task pop: %" PRIu64 ": %f\n", element.timestamp, element.value);
 				avg += element.value;
 				max = MAX(element.value, max);
 				min = MIN(element.value, min);
@@ -215,30 +218,30 @@ int LFPopAndComputeStatistics()
 	}
 	else
 	{
-	    LOGGER_TRACE("LF Pop and Compute Statistics Task: Waiting Windows Full\n");
-	    return 1;
+		LOGGER_TRACE("LF Pop and Compute Statistics Task: Waiting Windows Full\n");
+		return 1;
 	}
-	
+
 	avg = avg / LFPOP_WINDOW;
-	
+
 	static struct LFStatistics lfstatistics;
-	
+
 	int ret = FS_READ("./data/lfstatistics", &lfstatistics, sizeof(struct LFStatistics));
-	
+
 	if (ret < 0)
-	    lfstatistics.avg = avg;
-    lfstatistics.avg = ( avg + lfstatistics.avg ) / 2;
+		lfstatistics.avg = avg;
+	lfstatistics.avg = (avg + lfstatistics.avg) / 2;
 
 	FS_WRITE("./data/lfstatistics", &lfstatistics, sizeof(struct LFStatistics));
-	
+
 	LOGGER_DEBUG("\
     LF Pop and Compute Statistics Task: \
     avg:%.5f; \
     avgHistory:%.5f; \
     max:%.5f; \
     min:%.5f;\n",
-	avg, lfstatistics.avg, max, min);
-		
+							 avg, lfstatistics.avg, max, min);
+
 	return 0;
 }
 
@@ -250,17 +253,17 @@ int LFPopAndComputeStatistics()
 
 int main(int argc, char **argv)
 {
-    // seed random initialization
+	// seed random initialization
 	srand(time(NULL));
-	
+
 	// init logger, specific the path of file, the level where start log and if you want write log in STDOUT or not.
 	LOGGER("./log/main.log", LOGGER_LEVEL_DEBUG, LOGGER_STDOUT_ON);
-	
+
 	// init config JSON file, specific the path of JSON file.
 	CONFIG_INIT("./config/common.json");
 	internalConfigInit();
-	
-    // start application
+
+	// start application
 	LOGGER_INFO("Skeleton starting...\n");
 
 	// reset circular buffer.

@@ -197,6 +197,10 @@ extern int getIntArrayAsString(int *array, int size, char *string, int stringMax
 extern int getDoubleArrayAsString(double *array, int size, char *string, int stringMaxSize);
 extern int getDoubleMatrixAsString(double *matrix, int sizeX, int sizeY, char *string, int stringMaxSize);
 
+extern void jW_Start_array(char *JS, int *JS_start);
+extern void jW_End_array(char *JS, int *JS_len);
+extern void jW_Object_add_to_array(char *value, char *JS, int *JS_idx);
+
 
 #define JSON_CREATE_INT_ARRAY(ARRAY, ARRAY_SIZE, JSON_NEW_ARRAY, JSON_ARRAY_MAX_SIZE)\
   getIntArrayAsString(ARRAY, ARRAY_SIZE, JSON_NEW_ARRAY, JSON_ARRAY_MAX_SIZE)
@@ -207,6 +211,9 @@ extern int getDoubleMatrixAsString(double *matrix, int sizeX, int sizeY, char *s
 #define JSON_CREATE_DOUBLE_MATRIX(MATRIX, MATRIX_X_SIZE, MATRIX_Y_SIZE, JSON_NEW_MATRIX, JSON_MATRIX_MAX_SIZE)\
   getDoubleMatrixAsString(MATRIX, MATRIX_X_SIZE, MATRIX_Y_SIZE, JSON_NEW_MATRIX, JSON_MATRIX_MAX_SIZE)
 
+#define JSON_START_ARRAY(ARRAY, INDEX) jW_Start_array(ARRAY, INDEX)
+#define JSON_END_ARRAY(ARRAY, INDEX) jW_End_array(ARRAY, INDEX)
+#define JSON_ADD_OBJ_TO_ARRAY(OBJ, ARRAY, INDEX) jW_Object_add_to_array(OBJ, ARRAY, INDEX)
 
 // -------------------- JSON INPUT --------------------
 
