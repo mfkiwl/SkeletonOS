@@ -2,7 +2,10 @@
 
 ## Idea
 
-et posteris judicas ...
+things to do while contributing to the project: 
+- watch a game of Ronnie O'Sullivan.
+- listen to Apparat.
+- eat ice cream.
 
 My idea is to put together the basic tools to create a skeleton project in C. Through skeleton the user can be immediately operational, he will have:
 - Scheduler
