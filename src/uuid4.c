@@ -3,7 +3,7 @@
 
 // http://xorshift.di.unimi.it/xorshift128plus.c
 
-#include "skeleton/uuid4.h"
+#include "uuid4.h"
 
 static uint64_t seed[2];
 

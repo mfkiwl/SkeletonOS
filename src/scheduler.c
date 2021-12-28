@@ -3,8 +3,8 @@
 #include <unistd.h>
 #include <sys/time.h>
 
-#include "skeleton/scheduler.h"
-#include "skeleton/logger.h"
+#include "scheduler.h"
+#include "logger.h"
 
 static struct pcb processlist[MAX_PROCESSES];
 

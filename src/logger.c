@@ -5,7 +5,7 @@
 #include <errno.h>
 #include <time.h>
 
-#include "skeleton/logger.h"
+#include "logger.h"
 
 /**
  * global logger context

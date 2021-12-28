@@ -1,8 +1,8 @@
 #include <ctype.h>
 
-#include "skeleton/json.h"
-#include "skeleton/logger.h"
-#include "skeleton/errorHandling.h"
+#include "json.h"
+#include "logger.h"
+#include "errorHandling.h"
 
 /** Structure to handle a heap of JSON properties. */
 typedef struct jsonStaticPool_s
@@ -66,7 +66,6 @@ void readFile(const char *nameFile, char *buffer)
 	fp = fopen(nameFile, "rb");
 	if (!fp)
 	{
-		// printf("File Config Open Error\n");
 		LOGGER_ERROR("File Config Open Error\n");
 		EXIT(-1, "File Config Open Error\n");
 	}

@@ -4,7 +4,7 @@
 #include <math.h>
 #include <stdbool.h>
 
-#include "skeleton/math.h"
+#include "dsp.h"
 
 const float sin_tb[] = { // (PI PI/2 PI/4 PI/8 PI/16 ... PI/(2^k))
 	0.000000, 1.000000, 0.707107, 0.382683, 0.195090, 0.098017,

@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "skeleton/json.h"
-#include "skeleton/config.h"
-#include "skeleton/logger.h"
+#include "json.h"
+#include "config.h"
+#include "logger.h"
 
 json_t const *jsonConfig = NULL;
 

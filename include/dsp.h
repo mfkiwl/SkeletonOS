@@ -1,5 +1,5 @@
-#ifndef MATH_H_
-#define MATH_H_
+#ifndef DSP_H_
+#define DSP_H_
 
 #define ARREYSIZE(x)  (sizeof(x) / sizeof((x)[0]))
 #define FLOAT_TO_INT(x) ((x)>=0?(int)((x)+0.5):(int)((x)-0.5))
@@ -94,4 +94,4 @@ extern double crestFactor(double *input, uint64_t size);
  */
 extern double mean(double *input, uint64_t size);
 
-#endif /* MATH_H_ */
+#endif /* MATHAPI_H_ */

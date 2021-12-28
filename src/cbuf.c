@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "skeleton/cbuf.h"
+#include "cbuf.h"
 
 int __circ_gbuf_pop(circ_gbuf_t *circ_buf, void *elem, uint16_t read_only)
 {

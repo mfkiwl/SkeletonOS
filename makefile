@@ -1,3 +1,5 @@
+# Obsolete methode !
+
 CC=gcc
 
 INCLUDE=include

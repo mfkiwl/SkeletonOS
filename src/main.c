@@ -11,6 +11,10 @@
 #define CBUF_HFDATA_SIZE 8192
 #define CBUF_LFDATA_SIZE 128
 
+#define DATA_FILE_NAME 		"../data/lfstatistics.data"
+#define LOG_FILE_NAME 		"../log/main.log"
+#define CONFIG_FILE_NAME 	"../config/common.json"
+
 struct Element
 {
 	double value;
@@ -184,7 +188,7 @@ int HFPopAndComputeStatistics()
     max:%.5f; \
     rms:%.5f; \
     crest factor:%.5f;\n",
-							 std, var, ske, kur, max, sqr, cfa);
+						std, var, ske, kur, max, sqr, cfa);
 
 	return 0;
 }
@@ -226,13 +230,13 @@ int LFPopAndComputeStatistics()
 
 	static struct LFStatistics lfstatistics;
 
-	int ret = FS_READ("./data/lfstatistics", &lfstatistics, sizeof(struct LFStatistics));
+	int ret = FS_READ(DATA_FILE_NAME, &lfstatistics, sizeof(struct LFStatistics));
 
 	if (ret < 0)
 		lfstatistics.avg = avg;
 	lfstatistics.avg = (avg + lfstatistics.avg) / 2;
 
-	FS_WRITE("./data/lfstatistics", &lfstatistics, sizeof(struct LFStatistics));
+	FS_WRITE(DATA_FILE_NAME, &lfstatistics, sizeof(struct LFStatistics));
 
 	LOGGER_DEBUG("\
     LF Pop and Compute Statistics Task: \
@@ -253,14 +257,15 @@ int LFPopAndComputeStatistics()
 
 int main(int argc, char **argv)
 {
+
 	// seed random initialization
 	srand(time(NULL));
 
 	// init logger, specific the path of file, the level where start log and if you want write log in STDOUT or not.
-	LOGGER("./log/main.log", LOGGER_LEVEL_DEBUG, LOGGER_STDOUT_ON);
+	LOGGER(LOG_FILE_NAME, LOGGER_LEVEL_DEBUG, LOGGER_STDOUT_ON);
 
 	// init config JSON file, specific the path of JSON file.
-	CONFIG_INIT("./config/common.json");
+	CONFIG_INIT(CONFIG_FILE_NAME);
 	internalConfigInit();
 
 	// start application

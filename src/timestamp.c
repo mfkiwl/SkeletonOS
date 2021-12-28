@@ -1,6 +1,6 @@
 #include <time.h>
 
-#include "skeleton/timestamp.h"
+#include "timestamp.h"
 
 uint64_t getTimestamp()
 {
