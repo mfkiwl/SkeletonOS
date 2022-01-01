@@ -257,7 +257,6 @@ int LFPopAndComputeStatistics()
 
 int main(int argc, char **argv)
 {
-
 	// seed random initialization
 	srand(time(NULL));
 
@@ -269,7 +268,7 @@ int main(int argc, char **argv)
 	internalConfigInit();
 
 	// start application
-	LOGGER_INFO("Skeleton starting...\n");
+	LOGGER_INFO("Skeleton %s starting...\n", SKELETON_VERSION);
 
 	// reset circular buffer.
 	CIRC_GBUF_FLUSH(cBufHFData); //init cBufHF

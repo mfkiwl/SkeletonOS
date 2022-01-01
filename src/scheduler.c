@@ -5,6 +5,7 @@
 
 #include "scheduler.h"
 #include "logger.h"
+#include "cmake.h"
 
 static struct pcb processlist[MAX_PROCESSES];
 
@@ -58,10 +59,10 @@ int process_detach(uint16_t pid)
 /* returns the current time in microseconds with some arbitrary start point */
 static uint64_t getTime(void)
 {
-#if defined(__MCU__)
+#if (ARM_PLATFORM)
 	/* just use the arduino epoch */
 	return millis();
-#else
+#elif (LINUX_PLATFORM)
 	/* for use on POSIX machines */
 	struct timeval tv;
 	gettimeofday(&tv, NULL);

@@ -10,5 +10,6 @@
 #include "timestamp.h"
 #include "errorHandling.h"
 #include "dsp.h"
+#include "cmake.h"
 
 #endif /* MAIN */

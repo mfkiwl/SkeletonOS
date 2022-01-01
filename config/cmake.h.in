@@ -1,0 +1,10 @@
+#ifndef CMAKE_H
+#define CMAKE_H
+
+// define your version_libinterface
+#define SKELETON_VERSION "@SKELETON_VERSION@"
+
+#define ARM_PLATFORM    @SKELETON_PLATFORM_ARM@
+#define LINUX_PLATFORM  @SKELETON_PLATFORM_LINUX@
+
+#endif // CMAKE_H
