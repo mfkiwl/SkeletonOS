@@ -54,7 +54,7 @@ CIRC_GBUF_DEF(struct Element, cBufHFData, CBUF_HFDATA_SIZE);
 CIRC_GBUF_DEF(struct Element, cBufLFData, CBUF_LFDATA_SIZE);
 
 // process test generate data
-int LFGenerator()
+int LFGenerator(uint8_t pid)
 {
 	LOGGER_TRACE("LF Data Generator Task\n");
 
@@ -82,7 +82,7 @@ int LFGenerator()
 #define SIN_WAVE_SIZE 128
 
 // process test generate data
-int HFGenerator()
+int HFGenerator(uint8_t pid)
 {
 	LOGGER_TRACE("HF Data Generator Task\n");
 
@@ -114,7 +114,7 @@ int HFGenerator()
 
 #define HFPOP_WINDOW 4096
 
-int HFPopAndComputeStatistics()
+int HFPopAndComputeStatistics(uint8_t pid)
 {
 	LOGGER_TRACE("HF Pop and Compute Statistics Task\n");
 
@@ -195,7 +195,7 @@ int HFPopAndComputeStatistics()
 
 #define LFPOP_WINDOW 16
 
-int LFPopAndComputeStatistics()
+int LFPopAndComputeStatistics(uint8_t pid)
 {
 
 	LOGGER_TRACE("LF Pop and Compute Statistics Task\n");
@@ -275,10 +275,10 @@ int main(int argc, char **argv)
 	CIRC_GBUF_FLUSH(cBufLFData); //init cBufLF
 
 	// attach task, set name, set period (ms) and set function call
-	PROCESS_ATTACH("LFGenerator", LF_GENERATOR_PERIOD, LFGenerator);
-	PROCESS_ATTACH("HFGenerator", HF_GENERATOR_PERIOD, HFGenerator);
-	PROCESS_ATTACH("HFPopAndComputeStatistics", HF_POP_PERIOD, HFPopAndComputeStatistics);
-	PROCESS_ATTACH("LFPopAndComputeStatistics", LF_POP_PERIOD, LFPopAndComputeStatistics);
+	PROCESS_ATTACH(LF_GENERATOR_PERIOD, LFGenerator);
+	PROCESS_ATTACH(HF_GENERATOR_PERIOD, HFGenerator);
+	PROCESS_ATTACH(HF_POP_PERIOD, HFPopAndComputeStatistics);
+	PROCESS_ATTACH(LF_POP_PERIOD, LFPopAndComputeStatistics);
 
 	// scheduler, while(1) handle the tasks
 	RUN();

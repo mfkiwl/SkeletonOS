@@ -20,16 +20,17 @@ set(CMAKE_CROSSCOMPILING 0)
 # 2. make
 
 
-
 if(_BUILD_TYPE STREQUAL linux)
     
     set(CMAKE_C_COMPILER "gcc")
     #set(CMAKE_CXX_COMPILER "/usr/bin/g++")
-    set(SKELETON_PLATFORM_LINUX 1)
-    set(SKELETON_PLATFORM_ARM 0)
+
+    set(SKELETON_SCHEDULER_MAX_PROCESSES 32)
+
+    set(ARCH arch-linux/linux.c)
 
     add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -O0)
-    add_executable(skeleton ${SOURCES})
+    add_executable(skeleton ${SOURCES} ${ARCH})
     target_link_libraries(skeleton m)
 
     execute_process (
@@ -41,16 +42,16 @@ elseif(_BUILD_TYPE STREQUAL linuxStatic)
 
     set(CMAKE_C_COMPILER "gcc")
     #set(CMAKE_CXX_COMPILER "/usr/bin/g++")
-    set(SKELETON_PLATFORM_LINUX 1)
-    set(SKELETON_PLATFORM_ARM 0)
+
+    set(SKELETON_SCHEDULER_MAX_PROCESSES 32)
+    set(ARCH arch-linux/linux.c)
 
     #Generate the static library from the sources
     add_library(skeletonStatic STATIC ${SOURCES})
 
 elseif(_BUILD_TYPE STREQUAL arm)
     
-    set(SKELETON_PLATFORM_ARM 1)
-    set(SKELETON_PLATFORM_LINUX 0)
+    set(ARCH arch-arm/rp2040.c)
 
     add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -O0)
     add_executable(skeletonArm ${SOURCES})

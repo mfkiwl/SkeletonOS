@@ -7,22 +7,22 @@
 /**
  * color definitions
  */
-#define LOGGER_COLOR_RED "\x1b[31m"
-#define LOGGER_COLOR_GREEN "\x1b[32m"
+#define LOGGER_COLOR_RED 	"\x1b[31m"
+#define LOGGER_COLOR_GREEN 	"\x1b[32m"
 #define LOGGER_COLOR_YELLOW "\x1b[33m"
-#define LOGGER_COLOR_BLUE "\x1b[34m"
+#define LOGGER_COLOR_BLUE 	"\x1b[34m"
 #define LOGGER_COLOR_PURPLE "\x1b[35m"
-#define LOGGER_COLOR_CYAN "\x1b[36m"
-#define LOGGER_COLOR_WHITE "\x1b[37m"
-#define LOGGER_COLOR_RESET "\x1b[0m"
+#define LOGGER_COLOR_CYAN 	"\x1b[36m"
+#define LOGGER_COLOR_WHITE 	"\x1b[37m"
+#define LOGGER_COLOR_RESET 	"\x1b[0m"
 
-#define LOGGER_COLOR_RED_BOLD "\x1b[31;1m"
-#define LOGGER_COLOR_GREEN_BOLD "\x1b[32m"
-#define LOGGER_COLOR_YELLOW_BOLD "\x1b[33m"
-#define LOGGER_COLOR_BLUE_BOLD "\x1b[34m"
-#define LOGGER_COLOR_PURPLE_BOLD "\x1b[35m"
-#define LOGGER_COLOR_CYAN_BOLD "\x1b[36m"
-#define LOGGER_COLOR_WHITE_BOLD "\x1b[37m"
+#define LOGGER_COLOR_RED_BOLD 		"\x1b[31;1m"
+#define LOGGER_COLOR_GREEN_BOLD 	"\x1b[32m"
+#define LOGGER_COLOR_YELLOW_BOLD	"\x1b[33m"
+#define LOGGER_COLOR_BLUE_BOLD 		"\x1b[34m"
+#define LOGGER_COLOR_PURPLE_BOLD 	"\x1b[35m"
+#define LOGGER_COLOR_CYAN_BOLD 		"\x1b[36m"
+#define LOGGER_COLOR_WHITE_BOLD 	"\x1b[37m"
 
 /**
  * logger context
@@ -31,22 +31,22 @@ typedef struct logger_ctx_s
 {
 	FILE *fp;
 
-#define LOGGER_LEVEL_TRACE 0 << 1
-#define LOGGER_LEVEL_DEBUG 1 << 1
-#define LOGGER_LEVEL_INFO 2 << 1
-#define LOGGER_LEVEL_WARNING 3 << 1
-#define LOGGER_LEVEL_ERROR 4 << 1
-#define LOGGER_LEVEL_FATAL 5 << 1
-#define LOGGER_LEVEL_MASK 0x07 << 1
+	#define LOGGER_LEVEL_TRACE 		0 << 1
+	#define LOGGER_LEVEL_DEBUG 		1 << 1
+	#define LOGGER_LEVEL_INFO 		2 << 1
+	#define LOGGER_LEVEL_WARNING 	3 << 1
+	#define LOGGER_LEVEL_ERROR 		4 << 1
+	#define LOGGER_LEVEL_FATAL 		5 << 1
+	#define LOGGER_LEVEL_MASK 		0x07 << 1
 	uint8_t level;
 
-#define LOGGER_COLOR_OFF 1
-#define LOGGER_COLOR_ON 0
-#define LOGGER_COLOR_MASK 0x01
+	#define LOGGER_COLOR_OFF 	1
+	#define LOGGER_COLOR_ON 	0
+	#define LOGGER_COLOR_MASK 	0x01
 	uint8_t with_color;
 
-#define LOGGER_STDOUT_ON 1
-#define LOGGER_STDOUT_OFF 0
+	#define LOGGER_STDOUT_ON 	1
+	#define LOGGER_STDOUT_OFF 	0
 	uint8_t stdoutEnable;
 
 } logger_ctx_t;
