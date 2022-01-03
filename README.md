@@ -43,18 +43,31 @@ $ echo $0
 ```
 If you’re using ZSH, you’ll open the file ~/.zshrc in your editor:
 ```
-$ nano ~/.zshrc
+$ vim ~/.zshrc
 ```
 If you’re using the Bash shell, you’ll use the file ~/.bash_profile:
 ```
-$ nano ~/.bash_profile
+$ vim ~/.bash_profile
 ```
 Then, Once the file opens up in the Terminal window, add the following lines to the end of the file:
 ```
 # Add Homebrew's executable directory to the front of the PATH
-export PATH=/usr/local/bin:$PATH
+export PATH=/usr/local/sbin:$PATH
 ```
-Now, reboot the system.
+Now, reboot the system, or:
+```
+$ source ~/.zshrc
+```
+Brew prefer the last OS version:
+```
+$ softwareupdate --all --install --force
+```
+Use this command for verify Homebrew installation:
+```
+$ brew doctor
+```
+If you didn't see any warning, your installation was fine.
+
 
 
 ## Linux
