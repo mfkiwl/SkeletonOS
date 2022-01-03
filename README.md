@@ -3,9 +3,9 @@
 ## Idea
 
 things to do while contributing to the project: 
-- watch a game of Ronnie O'Sullivan.
+- watch Ronnie O'Sullivan match.
 - listen to Apparat.
-- eat ice cream.
+- eat ice cream (only summer season).
 
 My idea is to put together the basic tools to create a skeleton project in C. Through skeleton the user can be immediately operational, he will have:
 - Scheduler
@@ -13,6 +13,8 @@ My idea is to put together the basic tools to create a skeleton project in C. Th
 - Circular buffer
 - JSON config
 - lightDSP (FFT iFFT Statistics)
+- CMake like
+- Multi architecture support
 
 Time permitting, I'll add more ...
 MD Syntax Guide: https://www.markdownguide.org/basic-syntax/ 
@@ -22,9 +24,40 @@ MD Syntax Guide: https://www.markdownguide.org/basic-syntax/
 Available architectures:
 - Linux (x86_64)
 - Arduino MCU (to do)
-- ST MCU (to do)
+- RP2040 (to doing)
 
-### Linux Requirements
+## MacOs
+
+### Requirements
+
+#### Homebrew
+```
+$ xcode-select --install
+$ cd Dev/
+$ curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+$ /bin/bash install.sh
+```
+Now, you check if you have bash or zsh shell with:
+```
+$ echo $0
+```
+If you’re using ZSH, you’ll open the file ~/.zshrc in your editor:
+```
+$ nano ~/.zshrc
+```
+If you’re using the Bash shell, you’ll use the file ~/.bash_profile:
+```
+$ nano ~/.bash_profile
+```
+Then, Once the file opens up in the Terminal window, add the following lines to the end of the file:
+```
+# Add Homebrew's executable directory to the front of the PATH
+export PATH=/usr/local/bin:$PATH
+```
+Now, reboot the system.
+
+
+## Linux
 ```
 apt install texinfo build-essential manpages-dev make
 ```
