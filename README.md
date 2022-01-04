@@ -33,14 +33,14 @@ Available architectures:
 #### Homebrew
 (https://www.digitalocean.com/community/tutorials/how-to-install-and-use-homebrew-on-macos)
 
-Start:
+0. Start:
 ```
 $ xcode-select --install
 $ cd Dev/
 $ curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
 $ /bin/bash install.sh
 ```
-Now, you check if you have bash or zsh shell with:
+1. Now, you check if you have bash or zsh shell with:
 ```
 $ echo $0
 ```
@@ -52,20 +52,20 @@ If you’re using the Bash shell, you’ll use the file ~/.bash_profile:
 ```
 $ vim ~/.bash_profile
 ```
-Then, Once the file opens up in the Terminal window, add the following lines to the end of the file:
+2. Then, Once the file opens up in the Terminal window, add the following lines to the end of the file:
 ```
 # Add Homebrew's executable directory to the front of the PATH
 export PATH=/usr/local/sbin:$PATH
 ```
-Now, reboot the system, or:
+3. Now, reboot the system, or:
 ```
 $ source ~/.zshrc
 ```
-Brew prefer the last OS version:
+4. Brew prefer the last OS version:
 ```
 $ softwareupdate --all --install --force
 ```
-Use this command for verify Homebrew installation:
+5. Use this command for verify Homebrew installation:
 ```
 $ brew doctor
 ```
@@ -76,11 +76,11 @@ The right output message is:
 Your system is ready to brew.
 ```
 
-Now, we install a usefull tool for brew:
+6. Now, we install a usefull tool for brew:
 ```
 $ brew install tree
 ```
-Take care, brew tree is not a tree tools on yours OS, they are two different tool! 
+Take care, brew tree is not a tree line command tools on yours OS, they are two different tool! 
 Occasionally, you’ll want to upgrade an existing package. Use the brew upgrade command, followed by the package name:
 ```
 $ brew upgrade tree
@@ -89,19 +89,19 @@ $ brew upgrade tree
 #### Toolchain
 (https://andrejacobs.org/electronics/develop-and-debug-raspberry-pi-pico-on-macos-big-sur/)
 
-Ensure everything is ok and update homebrew packages.
+1. Ensure everything is ok and update homebrew packages.
 ```
 $ brew doctor
 $ brew update
 $ brew upgrade
 ```
-Install the Toolchain (following section 9.1 Building on Apple macOS from the Official guide)
+2. Install the Toolchain (following section 9.1 Building on Apple macOS from the Official guide)
 ```
 $ brew install cmake
 $ brew tap ArmMbed/homebrew-formulae
 $ brew install arm-none-eabi-gcc
 ```
-Now, we get the RP2040 SDK:
+3. Now, we get the RP2040 SDK:
 ```
 # cd into a directory where you want to store the files
 $ git clone -b master https://github.com/raspberrypi/pico-sdk.git
@@ -141,10 +141,72 @@ $ make -j4
 
 #### OpenOCD
 
-Install dependencies
+1. Install dependencies
 ```
 $ brew install libtool automake libusb wget pkg-config gcc texinfo
 ```
+2. Add texinfo on your PATH:
+```
+$ echo 'export PATH="/usr/local/opt/texinfo/bin:$PATH"' >> ~/.zshrc
+```
+3. Download source code and build OpenOCD
+```
+$ git clone https://github.com/raspberrypi/openocd.git --branch picoprobe --depth=1
+$ cd openocd
+$ ./bootstrap
+$ ./configure --enable-picoprobe --disable-werror
+$ make -j4
+$ make install
+```
+4. Run OpenOCD to verify it was built and installed
+```
+$ openocd
+Open On-Chip Debugger 0.10.0+dev-g18b4c35-dirty (2021-07-07-09:58)
+...
+Error: Debug Adapter has to be specified, see "adapter driver" command
+...
+```
+
+#### Picoprobe
+
+Build picoprobe from source.
+```
+$ git clone https://github.com/raspberrypi/picoprobe.git
+$ cd picoprobe
+$ mkdir build
+$ cd build
+# You might need to set the PICO_SDK_PATH again if you closed the terminal at some point
+# export PICO_SDK_PATH=../../pico-sdk
+$ cmake ..
+$ make -j4
+...
+[100%] Linking CXX executable picoprobe.elf
+[100%] Built target picoprobe
+```
+
+You should now have a filed called picoprobe.uf2 inside the build directory.
+Hold down BOOTSEL and connect the Pico to your Mac. The drive RPI-RP2 should be mounted.
+Drag the picoprobe.uf2 file onto the drive.
+
+#### Wire up the two Picos
+
+See Appendix A: Using Picoprobe from the official getting started guide for the wiring diagram.
+
+(Image from the official guide)
+![alt text](https://andrejacobs.org/wp-content/uploads/2021/07/Pico2.png)
+
+
+#### Visual Studio Code & RP2040
+
+Execute the following command in your terminal:
+```
+$ brew install visual-studio-code
+```
+To remove it, use brew uninstall:
+```
+$ brew uninstall visual-studio-code
+```
+
 
 ## Linux
 ```
@@ -272,9 +334,31 @@ int CONFIG_READ(const char *key, char *value);
 <br/>
 
 ## TIPS
-Visual Studio Code
+
+#### Visual Studio Code
 CMD+SHIFT+V -> .MD Preview on/off
 Probably need to install something
+
+#### Uninstalling Homebrew
+If you no longer need Homebrew, you can use its uninstall script.
+
+Download the uninstall script with curl:
+```
+curl -fsSL -o uninstall.sh https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh
+``` 
+As always, review the contents of the script with the less command to verify the script’s contents:
+```
+less uninstall.sh
+``` 
+Once you’ve verified the script, execute the script with the --help flag to see the various options you can use:
+```
+bash uninstall.sh --help
+bash uninstall.sh -d
+```
+When you’re ready to remove everything, execute the script without any flags:
+```
+bash uninstall.sh
+```
 
 # Have fun!
 REM said, remember, the ticket to the future is always blank.<br/>
