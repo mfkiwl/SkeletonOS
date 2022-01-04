@@ -207,6 +207,54 @@ To remove it, use brew uninstall:
 $ brew uninstall visual-studio-code
 ```
 
+Now would be a good time to add PICO_SDK_PATH to your shell’s path since Visual Studio Code will need this.
+```
+$ vim .zshrc 
+
+# Add Homebrew's executable directory to the front of the PATH
+export PATH=/usr/local/sbin:$PATH
+export PATH="/usr/local/opt/texinfo/bin:$PATH"
+export PICO_SDK_PATH=~/Dev/pico-sdk
+```
+Click on the Extensions icon in the sidebar or ⌘⇧X.
+-> Install the CMake Tools extension made by Microsoft. 
+-> Install Cortex-Debug by marus25.
+-> Install C/C++ from Microsoft.
+
+Configure toolchain, steps:
+1. Open the project example directory
+2. Configure CMake Tools. Click Yes.
+3. Select the arm-none-eabi option.
+
+Now, create the launch.json and settings.json files inside the .vscode directory of your project. 
+Since I am using the pico-examples directory as my project, I will create the files in there.
+```
+$ cd <YOUR_PATH>/pico-examples
+$ mkdir .vscode
+# The example repo comes with example settings
+$ cp ide/vscode/launch-raspberrypi-swd.json .vscode/launch.json
+$ cp ide/vscode/settings.json .vscode/settings.json
+```
+
+Edit the file .vscode/launch.json and make the following changes.
+```
+"gdbPath" : "arm-none-eabi-gdb",
+"configFiles": [
+	"interface/picoprobe.cfg",
+	"target/rp2040.cfg"
+],
+```
+
+Close and reopen Visual Studio Code and open the project (in my case the pico-examples directory).
+Ensure the Picoprobe + Pico is connected to your Mac.
+Click the green play icon from the Run and Debug section. Select the program to run (e.g. blink)
+
+![alt text](https://andrejacobs.org/wp-content/uploads/2021/07/Pico12.png)
+
+The debugger will stop on main() function and you can now step through the code.
+
+![alt text](https://andrejacobs.org/wp-content/uploads/2021/07/Pico13.png)
+
 
 ## Linux
 ```
