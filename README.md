@@ -31,6 +31,9 @@ Available architectures:
 ### Requirements
 
 #### Homebrew
+(https://www.digitalocean.com/community/tutorials/how-to-install-and-use-homebrew-on-macos)
+
+Start:
 ```
 $ xcode-select --install
 $ cd Dev/
@@ -67,8 +70,81 @@ Use this command for verify Homebrew installation:
 $ brew doctor
 ```
 If you didn't see any warning, your installation was fine.
+(Probably, need Command Line upgraded via Software Upgrade System)
+The right output message is:
+```
+Your system is ready to brew.
+```
 
+Now, we install a usefull tool for brew:
+```
+$ brew install tree
+```
+Take care, brew tree is not a tree tools on yours OS, they are two different tool! 
+Occasionally, you’ll want to upgrade an existing package. Use the brew upgrade command, followed by the package name:
+```
+$ brew upgrade tree
+```
 
+#### Toolchain
+(https://andrejacobs.org/electronics/develop-and-debug-raspberry-pi-pico-on-macos-big-sur/)
+
+Ensure everything is ok and update homebrew packages.
+```
+$ brew doctor
+$ brew update
+$ brew upgrade
+```
+Install the Toolchain (following section 9.1 Building on Apple macOS from the Official guide)
+```
+$ brew install cmake
+$ brew tap ArmMbed/homebrew-formulae
+$ brew install arm-none-eabi-gcc
+```
+Now, we get the RP2040 SDK:
+```
+# cd into a directory where you want to store the files
+$ git clone -b master https://github.com/raspberrypi/pico-sdk.git
+$ cd pico-sdk
+$ git submodule update --init
+```
+```
+# Get the example code
+$ cd ..
+$ git clone -b master https://github.com/raspberrypi/pico-examples.git
+```
+Now, we can test all env dev for RP2040:
+
+1. Get cmake ready to build the examples.
+```
+$ cd pico-examples
+$ mkdir build
+$ cd build
+```
+2. Set the path to where the SDK can be found
+```
+$ export PICO_SDK_PATH=../../pico-sdk
+```
+3. Get the build directory ready for cmake
+```
+$ cmake ..
+```
+4. Build the blink example.
+```
+$ cd blink
+$ make -j4
+...
+[100%] Linking CXX executable blink.elf
+[100%] Built target blink
+```
+3. You should now have a blink.uf2 file inside the build/blink directory
+
+#### OpenOCD
+
+Install dependencies
+```
+$ brew install libtool automake libusb wget pkg-config gcc texinfo
+```
 
 ## Linux
 ```
