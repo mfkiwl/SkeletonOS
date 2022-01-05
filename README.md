@@ -26,7 +26,7 @@ Available architectures:
 - Arduino MCU (to do)
 - RP2040 (to doing)
 
-## MacOs
+## MacOS
 
 ### Requirements
 
@@ -255,19 +255,37 @@ The debugger will stop on main() function and you can now step through the code.
 
 ![alt text](https://andrejacobs.org/wp-content/uploads/2021/07/Pico13.png)
 
+### Compile and Run (MacOS)
+On your Terminal: 
+```
+git clone https://github.com/VashTheProgrammer/Skeleton/
+cd Skeleton
+mkdir build
+cd build
+cmake -D_BUILD_TYPE="macos" ..
+make
+./skeleton
+```
+that's it!
 
 ## Linux
+
+### Requirements
 ```
 apt install texinfo build-essential manpages-dev make
 ```
+Miss information, please!
 
-## Compile and Run
-
-Compile instruction (skeleton & DSP)
+### Compile and Run (Linux)
+On your Terminal:
 ```
-make clean
-make 
-./main
+git clone https://github.com/VashTheProgrammer/Skeleton/
+cd Skeleton
+mkdir build
+cd build
+cmake -D_BUILD_TYPE="linux" ..
+make
+./skeleton
 ```
 
 ## How does it work ?
