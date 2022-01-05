@@ -217,9 +217,9 @@ export PATH="/usr/local/opt/texinfo/bin:$PATH"
 export PICO_SDK_PATH=~/Dev/pico-sdk
 ```
 Click on the Extensions icon in the sidebar or ⌘⇧X.
--> Install the CMake Tools extension made by Microsoft. 
--> Install Cortex-Debug by marus25.
--> Install C/C++ from Microsoft.
+* Install the CMake Tools extension made by Microsoft. 
+* Install Cortex-Debug by marus25.
+* Install C/C++ from Microsoft.
 
 Configure toolchain, steps:
 1. Open the project example directory
