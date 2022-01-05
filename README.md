@@ -232,8 +232,8 @@ Since I am using the pico-examples directory as my project, I will create the fi
 $ cd <YOUR_PATH>/pico-examples
 $ mkdir .vscode
 # The example repo comes with example settings
-$ cp ~/Dev/pico-example/ide/vscode/launch-raspberrypi-swd.json .vscode/launch.json
-$ cp ~/Dev/pico-example/ide/vscode/settings.json .vscode/settings.json
+$ cp ~/Dev/pico-examples/ide/vscode/launch-raspberrypi-swd.json .vscode/launch.json
+$ cp ~/Dev/pico-examples/ide/vscode/settings.json .vscode/settings.json
 ```
 
 Edit the file .vscode/launch.json and make the following changes.
