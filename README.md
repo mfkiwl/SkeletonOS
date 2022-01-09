@@ -26,7 +26,7 @@ Available architectures:
 - Arduino MCU (to do)
 - RP2040 (to doing)
 
-## MacOs
+## MacOS
 
 ### Requirements
 
@@ -232,16 +232,16 @@ Since I am using the pico-examples directory as my project, I will create the fi
 $ cd <YOUR_PATH>/pico-examples
 $ mkdir .vscode
 # The example repo comes with example settings
-$ cp ide/vscode/launch-raspberrypi-swd.json .vscode/launch.json
-$ cp ide/vscode/settings.json .vscode/settings.json
+$ cp ~/Dev/pico-examples/ide/vscode/launch-raspberrypi-swd.json .vscode/launch.json
+$ cp ~/Dev/pico-examples/ide/vscode/settings.json .vscode/settings.json
 ```
 
 Edit the file .vscode/launch.json and make the following changes.
 ```
 "gdbPath" : "arm-none-eabi-gdb",
 "configFiles": [
-	"interface/picoprobe.cfg",
-	"target/rp2040.cfg"
+    "interface/picoprobe.cfg",
+    "target/rp2040.cfg"
 ],
 ```
 
@@ -255,19 +255,37 @@ The debugger will stop on main() function and you can now step through the code.
 
 ![alt text](https://andrejacobs.org/wp-content/uploads/2021/07/Pico13.png)
 
+### Compile and Run (MacOS)
+On your Terminal: 
+```
+git clone https://github.com/VashTheProgrammer/Skeleton/
+cd Skeleton
+mkdir build
+cd build
+cmake -D_BUILD_TYPE="macos" ..
+make
+./skeleton
+```
+that's it!
 
 ## Linux
+
+### Requirements
 ```
 apt install texinfo build-essential manpages-dev make
 ```
+Miss information, please!
 
-## Compile and Run
-
-Compile instruction (skeleton & DSP)
+### Compile and Run (Linux)
+On your Terminal:
 ```
-make clean
-make 
-./main
+git clone https://github.com/VashTheProgrammer/Skeleton/
+cd Skeleton
+mkdir build
+cd build
+cmake -D_BUILD_TYPE="linux" ..
+make
+./skeleton
 ```
 
 ## How does it work ?

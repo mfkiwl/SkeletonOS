@@ -1,0 +1,10 @@
+#ifndef CMAKE_H
+#define CMAKE_H
+
+// define your version_libinterface
+#define SKELETON_VERSION "@SKELETON_VERSION@"
+
+//SCHEDULER
+#define SCHEDULER_MAX_PROCESSES @SKELETON_SCHEDULER_MAX_PROCESSES@
+
+#endif // CMAKE_H

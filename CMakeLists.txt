@@ -1,75 +1,54 @@
-cmake_minimum_required(VERSION 3.18.4)
-project("Skeleton")
+cmake_minimum_required(VERSION 3.12)
 
+if((_BUILD_TYPE STREQUAL macos) OR (_BUILD_TYPE STREQUAL linux))
+
+project(skeleton C CXX)
 set(SKELETON_VERSION v1.0)
 
-#Bring the headers, such as Student.h into the project
-include_directories(include)
-
 #Can manually add the sources using the set command as follows:
-#set(SOURCES src/main.c src/cbuf.c)
+set(SOURCES test/main.c)
 
-#However, the file(GLOB...) allows for wildcard additions:
-file(GLOB SOURCES "src/*.c")
+set(CMAKE_C_COMPILER "gcc")
+set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 
-set(CMAKE_CROSSCOMPILING 0)
+set(SKELETON_SCHEDULER_MAX_PROCESSES 32)
 
-# how to use:
-# 0. create build directory
-# 1. cmake -D_BUILD_TYPE="linux" .
-# 2. make
+#set(ARCH arch-linux/linux.c)
 
+add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -O0)
+add_executable(skeleton ${SOURCES} ${ARCH})
+target_link_libraries(skeleton m)
 
-if(_BUILD_TYPE STREQUAL linux)
-    
-    set(CMAKE_C_COMPILER "gcc")
-    #set(CMAKE_CXX_COMPILER "/usr/bin/g++")
+else() # RP2040 SDK
 
-    set(SKELETON_SCHEDULER_MAX_PROCESSES 32)
+# Pull in SDK (must be before project)
+include(pico_sdk_import.cmake)
 
-    set(ARCH arch-linux/linux.c)
+project(skeleton_proto C CXX ASM)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
-    add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -O0)
-    add_executable(skeleton ${SOURCES} ${ARCH})
-    target_link_libraries(skeleton m)
-
-    execute_process (
-        COMMAND bash -c "mkdir ../log"
-        COMMAND bash -c "mkdir ../data"
-        ) 
-
-elseif(_BUILD_TYPE STREQUAL linuxStatic)
-
-    set(CMAKE_C_COMPILER "gcc")
-    #set(CMAKE_CXX_COMPILER "/usr/bin/g++")
-
-    set(SKELETON_SCHEDULER_MAX_PROCESSES 32)
-    set(ARCH arch-linux/linux.c)
-
-    #Generate the static library from the sources
-    add_library(skeletonStatic STATIC ${SOURCES})
-
-elseif(_BUILD_TYPE STREQUAL arm)
-    
-    set(ARCH arch-arm/rp2040.c)
-
-    add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -O0)
-    add_executable(skeletonArm ${SOURCES})
-
-else()           
-    message( SEND_ERROR "_BUILD_TYPE not correct ! please try right target, example: $ cmake -D_BUILD_TYPE=\"linux\" . ")
+if (PICO_SDK_VERSION_STRING VERSION_LESS "1.3.0")
+    message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.3.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
+# Initialize the SDK
+pico_sdk_init()
 
-configure_file(config/cmake.h.in ${CMAKE_BINARY_DIR}/generated/cmake.h )
-include_directories( ${CMAKE_BINARY_DIR}/generated/ ) # Make sure it can be included...
+# Add blink example
+add_subdirectory(blink)
 
-# Per usare la static library:
+# Add Skeleton
+add_subdirectory(skeleton)
 
-#set ( PROJECT_LINK_LIBS libtestStudent.a )
-#link_directories( ~/exploringBB/extras/cmake/studentlib_static/build )
-#target_link_libraries(libtest ${PROJECT_LINK_LIBS} )
+add_compile_options(-Wall
+        -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
+        -Wno-unused-function # we have some for the docs that aren't called
+        -Wno-maybe-uninitialized
+        )
+endif()
 
-#INSTALL(TARGETS mylib DESTINATION lib)
-
-
+execute_process (
+    COMMAND bash -c "mkdir ../log"
+    COMMAND bash -c "mkdir ../data"
+    ) 
