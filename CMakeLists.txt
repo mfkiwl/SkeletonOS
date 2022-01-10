@@ -2,22 +2,15 @@ cmake_minimum_required(VERSION 3.12)
 
 if((_BUILD_TYPE STREQUAL macos) OR (_BUILD_TYPE STREQUAL linux))
 
-project(skeleton C CXX)
-set(SKELETON_VERSION v1.0)
+set(PLATFORM linux)
 
-#Can manually add the sources using the set command as follows:
-set(SOURCES test/main.c)
+project(skeleton C CXX)
 
 set(CMAKE_C_COMPILER "gcc")
 set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 
-set(SKELETON_SCHEDULER_MAX_PROCESSES 32)
+add_subdirectory(skeleton)
 
-#set(ARCH arch-linux/linux.c)
-
-add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -O0)
-add_executable(skeleton ${SOURCES} ${ARCH})
-target_link_libraries(skeleton m)
 
 else() # RP2040 SDK
 

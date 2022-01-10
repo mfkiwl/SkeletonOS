@@ -10,9 +10,9 @@
 #define CBUF_HFDATA_SIZE 8192
 #define CBUF_LFDATA_SIZE 128
 
-#define DATA_FILE_NAME 		"../data/lfstatistics.data"
-#define LOG_FILE_NAME 		"../log/main.log"
-#define CONFIG_FILE_NAME 	"../config/common.json"
+#define DATA_FILE_NAME 		"../../data/lfstatistics.data"
+#define LOG_FILE_NAME 		"../../log/main.log"
+#define CONFIG_FILE_NAME 	"../../skeleton/config/common.json"
 
 struct Element
 {
@@ -37,7 +37,7 @@ struct Config
 };
 struct Config config;
 
-/*
+
 void internalConfigInit()
 {
 	CONFIG_READ_INTEGER("LFGeneratorMax", &config.LFGeneratorMax);
@@ -46,7 +46,7 @@ void internalConfigInit()
 	CONFIG_READ_INTEGER("HFPopAndComputeStatisticsLowfiltercut", &config.HFPopAndComputeStatisticsLowfiltercut);
 	CONFIG_READ_INTEGER("HFPopAndComputeStatisticsNyquistcond", &config.HFPopAndComputeStatisticsNyquistcond);
 }
-*/
+
 
 circ_gbuf_t cBufHFData;
 circ_gbuf_t cBufLFData;
@@ -231,13 +231,13 @@ int LFPopAndComputeStatistics(uint8_t pid)
 
 	static struct LFStatistics lfstatistics;
 
-	//int ret = FS_READ(DATA_FILE_NAME, &lfstatistics, sizeof(struct LFStatistics));
+	int ret = FS_READ(DATA_FILE_NAME, &lfstatistics, sizeof(struct LFStatistics));
 
-	//if (ret < 0)
-	//	lfstatistics.avg = avg;
-	//lfstatistics.avg = (avg + lfstatistics.avg) / 2;
+	if (ret < 0)
+		lfstatistics.avg = avg;
+	lfstatistics.avg = (avg + lfstatistics.avg) / 2;
 
-	//FS_WRITE(DATA_FILE_NAME, &lfstatistics, sizeof(struct LFStatistics));
+	FS_WRITE(DATA_FILE_NAME, &lfstatistics, sizeof(struct LFStatistics));
 
 	LOGGER_DEBUG("\
     LF Pop and Compute Statistics Task: \
@@ -262,11 +262,12 @@ int main(int argc, char **argv)
 	initDrivers();
 
 	// init logger, specific the path of file, the level where start log and if you want write log in STDOUT or not.
-	LOGGER("log.txt", LOGGER_LEVEL_DEBUG, LOGGER_SERIAL_PRINT);
+	// LOGGER("log.txt", LOGGER_LEVEL_DEBUG, LOGGER_SERIAL_PRINT);
+	LOGGER(LOG_FILE_NAME, LOGGER_LEVEL_DEBUG, LOGGER_STDOUT_ON);
 
 	// init config JSON file, specific the path of JSON file.
-	//CONFIG_INIT(CONFIG_FILE_NAME);
-	//internalConfigInit();
+	CONFIG_INIT(CONFIG_FILE_NAME);
+	internalConfigInit();
 
 	// start application
 	LOGGER_INFO("Skeleton %s starting...", SKELETON_VERSION);

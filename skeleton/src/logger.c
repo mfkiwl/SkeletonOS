@@ -71,23 +71,18 @@ int logger_printf(uint16_t log_level, const char *color, const char *format, ...
 	}
 	else if (g_logger.stdoutEnable == LOGGER_STDOUT_ON ) //linux
 	{
-		/*
 		if (LOGGER_COLOR_ON == g_logger.with_color)
 		{
 			fprintf(stdout, "%s", color);
 		}
 
-		fprintf(stdout, "%s ", dataTime);
-		va_start(arg, format);
-		nwritten += vfprintf(stdout, format, arg);
-		va_end(arg);
+		fprintf(stdout, "%s", messageLogger);
 
 		if (LOGGER_COLOR_ON == g_logger.with_color)
 		{
 			fprintf(stdout, LOGGER_COLOR_RESET);
 			fflush(stdout);
 		}
-		*/
 
 	}
 	else 
@@ -99,17 +94,6 @@ int logger_printf(uint16_t log_level, const char *color, const char *format, ...
 	{
 		fileWrite(g_logger.filename, messageLogger);
 	}
-
-	/* linux
-	if (g_logger.fp)
-	{
-		fprintf(g_logger.fp, "%s ", dataTime);
-		va_start(arg, format);
-		vfprintf(g_logger.fp, format, arg);
-		fflush(g_logger.fp);
-		va_end(arg);
-	}
-	*/
 
 	return nwritten;
 }
