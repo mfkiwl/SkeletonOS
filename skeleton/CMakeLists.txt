@@ -4,42 +4,31 @@ include_directories(include)
 
 file(GLOB ARCH arch-${PLATFORM}/*.c)
 
+set(MAIN main-${PLATFORM}.c)
+
+file(GLOB SOURCES
+    src/*.c
+)
+
 if (PLATFORM STREQUAL linux)
 
     set(SKELETON_SCHEDULER_MAX_PROCESSES 64)
 
     add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -O0)
     
-    file(GLOB SOURCES
-        src/*.c
-    )
 
     # libSkeleton is always created 
     add_library(Skeleton STATIC ${SOURCES} ${ARCH})
 
-    set(SOURCES main-${PLATFORM}.c)
+    add_executable(skeleton ${MAIN})
 
-    add_executable(skeleton ${SOURCES})
     target_link_libraries(skeleton m Skeleton)
-
 
 elseif(PLATFORM STREQUAL arm) # RP2040
     
     include_directories(arch-arm)
-    
-    set(SKELETON_SCHEDULER_MAX_PROCESSES 32)
 
-    set(SOURCES
-        main-${PLATFORM}.c
-        src/scheduler.c
-        src/cbuf.c
-        src/dsp.c
-        src/logger.c
-        src/config.c
-        src/json.c
-    )
-
-    add_executable(skeleton ${SOURCES} ${ARCH})
+    add_executable(skeleton ${MAIN} ${SOURCES} ${ARCH})
 
     pico_generate_pio_header(skeleton ${CMAKE_CURRENT_LIST_DIR}/uart_tx.pio)
 

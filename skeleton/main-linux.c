@@ -10,9 +10,9 @@
 #define CBUF_HFDATA_SIZE 8192
 #define CBUF_LFDATA_SIZE 128
 
-#define DATA_FILE_NAME 		"lfstatistics.data"
-#define LOG_FILE_NAME 		"main.log"
-#define CONFIG_FILE_NAME 	"common.json"
+#define DATA_FILE_NAME 		"../../data/lfstatistics.data"
+#define LOG_FILE_NAME 		"../../log/main.log"
+#define CONFIG_FILE_NAME 	"../../skeleton/config/common.json"
 
 struct Element
 {
@@ -251,10 +251,10 @@ int LFPopAndComputeStatistics(uint8_t pid)
 }
 
 // define Tasks period (us)
-#define LF_GENERATOR_PERIOD 1 * 1000 * 1000
-#define HF_GENERATOR_PERIOD 1 * 1000 * 1000
-#define HF_POP_PERIOD 100 * 1000
-#define LF_POP_PERIOD 100 * 1000
+#define LF_GENERATOR_PERIOD 1 * SECONDS
+#define HF_GENERATOR_PERIOD 1 * SECONDS
+#define HF_POP_PERIOD 100 * MILLISECONDS
+#define LF_POP_PERIOD 100 * MILLISECONDS
 
 int main(int argc, char **argv)
 {
@@ -262,8 +262,7 @@ int main(int argc, char **argv)
 	initDrivers();
 
 	// init logger, specific the path of file, the level where start log and if you want write log in STDOUT or not.
-	LOGGER(LOG_FILE_NAME, LOGGER_LEVEL_DEBUG, LOGGER_SERIAL_PRINT);
-	//LOGGER(LOG_FILE_NAME, LOGGER_LEVEL_DEBUG, LOGGER_STDOUT_ON);
+	LOGGER(LOG_FILE_NAME, LOGGER_LEVEL_DEBUG, LOGGER_STDOUT_ON);
 
 	// init config JSON file, specific the path of JSON file.
 	CONFIG_INIT(CONFIG_FILE_NAME);
@@ -276,9 +275,7 @@ int main(int argc, char **argv)
 	CIRC_GBUF_FLUSH(cBufHFData); //init cBufHF
 	CIRC_GBUF_FLUSH(cBufLFData); //init cBufLF
 
-	// attach task, set name, set period (us) and set function call
-	PROCESS_ATTACH(100  * 1000, SquareGenerator); // 100 ms
-	
+	// attach task, set name, set period (us) and set function call	
 	PROCESS_ATTACH(LF_GENERATOR_PERIOD, LFGenerator);
 	PROCESS_ATTACH(HF_GENERATOR_PERIOD, HFGenerator);
 	PROCESS_ATTACH(HF_POP_PERIOD, HFPopAndComputeStatistics);
