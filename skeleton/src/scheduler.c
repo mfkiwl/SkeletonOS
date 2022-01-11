@@ -47,7 +47,7 @@ int scheduler()
 
 	while (1)
 	{
-		uint64_t now = getTime();
+		uint64_t now = getMicrosecTime();
 
 		for (uint16_t i = 0; i < SCHEDULER_MAX_PROCESSES; i++)
 		{

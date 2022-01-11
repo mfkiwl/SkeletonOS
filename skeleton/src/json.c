@@ -1,8 +1,8 @@
 #include <ctype.h>
 
+#include "arch.h"
 #include "json.h"
 #include "logger.h"
-#include "errorHandling.h"
 
 /** Structure to handle a heap of JSON properties. */
 typedef struct jsonStaticPool_s
@@ -57,29 +57,6 @@ static json_t *poolAlloc(jsonPool_t *pool);
 static char *objValue(char *ptr, json_t *obj, jsonPool_t *pool);
 static char *setToNull(char *ch);
 static bool isEndOfPrimitive(char ch);
-
-void readFile(const char *nameFile, char *buffer)
-{
-	FILE *fp;
-	long lSize;
-
-	fp = fopen(nameFile, "rb");
-	if (!fp)
-	{
-		LOGGER_ERROR("File Config Open Error\n");
-		EXIT(-1, "File Config Open Error\n");
-	}
-
-	fseek(fp, 0L, SEEK_END);
-	lSize = ftell(fp);
-	rewind(fp);
-
-	/* copy the file into the buffer */
-	if (1 != fread(buffer, lSize, 1, fp))
-		fclose(fp), free(buffer), EXIT(-1, "entire read fails\n");// fputs("entire read fails", stderr), exit(1);
-
-	fclose(fp);
-}
 
 void dump(json_t const *json)
 {

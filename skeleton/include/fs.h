@@ -1,14 +1,12 @@
 #ifndef FS_H_
 #define FS_H_
 
-//extern void fs_init(const char*);
-extern int fs_write(const char *, void *, int);
-extern int fs_read(const char *, void *, int);
+#include "arch.h"
 
-#define FS_WRITE(A, B, C) \
-	fs_write(A, B, C);
+#define FS_WRITE(NAME, CONTENT, SIZE) \
+	nonVolatileWrite(NAME, CONTENT, SIZE)
 
-#define FS_READ(A, B, C) \
-	fs_read(A, B, C)
+#define FS_READ(NAME, CONTENT, SIZE) \
+	nonVolatileRead(NAME, CONTENT, SIZE)
 
 #endif // !FS_H_

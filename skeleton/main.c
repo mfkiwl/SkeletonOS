@@ -7,6 +7,8 @@
 
 #include "main.h"
 
+// TODO: add a main for rp2040
+
 #define CBUF_HFDATA_SIZE 8192
 #define CBUF_LFDATA_SIZE 128
 
@@ -60,7 +62,7 @@ int LFGenerator(uint8_t pid)
 	LOGGER_TRACE("LF Data Generator Task");
 
 	struct Element element;
-	element.timestamp = getTime();
+	element.timestamp = getMillisTime();
 
 	const int max = config.LFGeneratorMax;
 	const int min = config.LFGeneratorMin;
@@ -88,7 +90,7 @@ int HFGenerator(uint8_t pid)
 	LOGGER_TRACE("HF Data Generator Task");
 
 	struct Element element;
-	element.timestamp = getTime();
+	element.timestamp = getMillisTime();
 
 	const int fs = config.HFGeneratorFs;
 

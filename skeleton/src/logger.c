@@ -25,7 +25,7 @@ int logger_init(char *filename, uint16_t options, uint16_t stdoutEnable)
 	else
 	{
 		g_logger.storage = YES;
-		memcpy ( g_logger.filename, filename, strlen(filename));
+		memcpy(g_logger.filename, filename, strlen(filename));
 	}
 
 	g_logger.with_color = LOGGER_COLOR_OFF;
@@ -54,7 +54,7 @@ int logger_printf(uint16_t log_level, const char *color, const char *format, ...
 	}
 
 	static char dataTime[64]; 
-	getDataTime(dataTime);
+	getFormattedTime(dataTime);
 
 	static char messageLogger[1024];
 	static char args[512];
@@ -65,11 +65,12 @@ int logger_printf(uint16_t log_level, const char *color, const char *format, ...
 
 	sprintf(messageLogger, "%s %s \r\n", dataTime, args);
 
+// TODO: switch
 	if (g_logger.stdoutEnable == LOGGER_SERIAL_PRINT)
 	{
-		writeString(messageLogger);
+		serialWriteString(messageLogger);
 	}
-	else if (g_logger.stdoutEnable == LOGGER_STDOUT_ON ) //linux
+	else if (g_logger.stdoutEnable == LOGGER_STDOUT_ON ) // linux
 	{
 		if (LOGGER_COLOR_ON == g_logger.with_color)
 		{
@@ -92,7 +93,7 @@ int logger_printf(uint16_t log_level, const char *color, const char *format, ...
 
 	if (g_logger.storage == YES)
 	{
-		fileWrite(g_logger.filename, messageLogger);
+		textFileWrite(g_logger.filename, messageLogger, APPEND);
 	}
 
 	return nwritten;

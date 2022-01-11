@@ -4,7 +4,7 @@
 #define MAX_BUFFER_SIZE 8192
 #define MEM_SIZE 256
 
-extern int config_init(const char *path);
+extern int config_init(char *path);
 
 #define CONFIG_INIT(A) \
 	config_init(A)

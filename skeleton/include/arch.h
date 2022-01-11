@@ -1,31 +1,40 @@
 #ifndef ARCH_H_
 #define ARCH_H_
 
-#define RAND_MAX 32767
+#include <inttypes.h>
+#include <stdint.h>
 
-// Disk Write
+// disk access
 #define APPEND  0
 #define SHOT    1
-int fileWrite(char* filename, char *message);
 
+extern int textFileRead(char* filename, char* content);
+extern int textFileWrite(char* filename, char* content, uint8_t mode);
 
-// Scheduler
+extern int nonVolatileRead(char* name, void* content, int size);
+extern int nonVolatileWrite(char* name, void* content, int size);
+
+// scheduler
 extern void hardwareSchedulerRun();
 
-// pioSerial
-extern void initPIOSERIAL();
-extern void writeString(const char* string);
-extern void writeChar(const char ch);
+// serial debug
+extern void serialWriteString(const char* string);
+extern void serialWriteChar(const char ch);
 
 // time
-extern uint64_t getTime();
-extern void getDataTime(char *);
+extern uint64_t getMicrosecTime();
+extern uint64_t getMillisTime();
+extern void getFormattedTime(char* formattedTime);
 
 // random
-uint32_t rnd();
+extern uint32_t rnd();
 
 // drivers
 extern void initDrivers();
 extern int SquareGenerator(int pid);
+
+// error handling
+extern void arch_exit(int code, char* msg_format, ...);
+#define EXIT(CODE, MSG_FORMAT, ...) arch_exit(CODE, MSG_FORMAT, ##__VA_ARGS__)
 
 #endif // !ARCH_H_
