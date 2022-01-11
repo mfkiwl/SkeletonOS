@@ -17,7 +17,7 @@ if (PLATFORM STREQUAL linux)
     # libSkeleton is always created 
     add_library(Skeleton STATIC ${SOURCES} ${ARCH})
 
-    set(SOURCES main.c)
+    set(SOURCES main-${PLATFORM}.c)
 
     add_executable(skeleton ${SOURCES})
     target_link_libraries(skeleton m Skeleton)
@@ -30,13 +30,14 @@ elseif(PLATFORM STREQUAL arm) # RP2040
     set(SKELETON_SCHEDULER_MAX_PROCESSES 32)
 
     set(SOURCES
-        src/main.c
+        main-${PLATFORM}.c
         src/scheduler.c
         src/cbuf.c
         src/dsp.c
         src/logger.c
+        src/config.c
+        src/json.c
     )
-
 
     add_executable(skeleton ${SOURCES} ${ARCH})
 

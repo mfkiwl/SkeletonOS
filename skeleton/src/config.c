@@ -11,7 +11,13 @@ json_t const *jsonConfig = NULL;
 int config_init(char *path)
 {
 	char buffer[MAX_BUFFER_SIZE];
-	textFileRead(path, buffer);
+	if (textFileRead(path, buffer) == 1)
+	{
+		while(true);
+		return 1;
+	}
+
+
 
 	json_t mem[MEM_SIZE];
 	jsonConfig = JSON_PARSE(buffer, mem, sizeof mem / sizeof *mem);

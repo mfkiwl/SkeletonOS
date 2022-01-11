@@ -12,9 +12,9 @@
 #define CBUF_HFDATA_SIZE 8192
 #define CBUF_LFDATA_SIZE 128
 
-#define DATA_FILE_NAME 		"../../data/lfstatistics.data"
-#define LOG_FILE_NAME 		"../../log/main.log"
-#define CONFIG_FILE_NAME 	"../../skeleton/config/common.json"
+#define DATA_FILE_NAME 		"lfstatistics.data"
+#define LOG_FILE_NAME 		"main.log"
+#define CONFIG_FILE_NAME 	"common.json"
 
 struct Element
 {
@@ -264,8 +264,8 @@ int main(int argc, char **argv)
 	initDrivers();
 
 	// init logger, specific the path of file, the level where start log and if you want write log in STDOUT or not.
-	// LOGGER("log.txt", LOGGER_LEVEL_DEBUG, LOGGER_SERIAL_PRINT);
-	LOGGER(LOG_FILE_NAME, LOGGER_LEVEL_DEBUG, LOGGER_STDOUT_ON);
+	LOGGER(LOG_FILE_NAME, LOGGER_LEVEL_DEBUG, LOGGER_SERIAL_PRINT);
+	//LOGGER(LOG_FILE_NAME, LOGGER_LEVEL_DEBUG, LOGGER_STDOUT_ON);
 
 	// init config JSON file, specific the path of JSON file.
 	CONFIG_INIT(CONFIG_FILE_NAME);

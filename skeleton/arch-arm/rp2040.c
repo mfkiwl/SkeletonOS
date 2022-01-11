@@ -193,19 +193,19 @@ int textFileRead(char* filename, char* content)
     if (fr != FR_OK) {
         serialWriteString("[ERROR] Could not open file \r\n");
         SDCardAvailable = 0;
-        //while (true);
+        while (true);
         return 1;
     }
 
-    uint64_t size = f_size(fp);
+    uint64_t size = f_size(&fil);
 
     // read the whole file
     fr = f_read(&fil, content, size, &ret);
     if (fr != FR_OK) {
-        serialWriteString("[ERROR] Could not read th file \r\n");
+        serialWriteString("[ERROR] Could not read file \r\n");
         f_close(&fil);
         SDCardAvailable = 0;
-        //while (true);
+        while (true);
         return 1;
     }
 
@@ -214,7 +214,7 @@ int textFileRead(char* filename, char* content)
     if (fr != FR_OK) {
         serialWriteString("[ERROR] Could not close file \r\n");
         SDCardAvailable = 0;
-        //while (true);
+        while (true);
         return 1;
     }
 
@@ -253,11 +253,17 @@ int nonVolatileRead(char* name, void* content, int size)
     }
 
     // Open file for reading
-    fr = f_open(&fil, filename, FA_READ);
+    fr = f_open(&fil, name, FA_READ);
+    if (fr == FR_NO_FILE)
+    {
+        serialWriteString("[WARNING] File not exist \r\n");
+        return -1;
+    }
+
     if (fr != FR_OK) {
         serialWriteString("[ERROR] Could not open file \r\n");
         SDCardAvailable = 0;
-        //while (true);
+        while (true);
         return 1;
     }
 
@@ -307,16 +313,16 @@ int nonVolatileWrite(char* name, void* content, int size)
     if (fr != FR_OK) {
         serialWriteString("[ERROR] Could not mount filesystem \r\n");
         SDCardAvailable = 0;
-        //while (true);
+        while (true);
         return 1;
     }
 
     // Open file for writing ()
-    fr = f_open(&fil, filename, FA_WRITE | FA_CREATE_ALWAYS);
+    fr = f_open(&fil, name, FA_WRITE | FA_CREATE_ALWAYS);
     if (fr != FR_OK) {
         serialWriteString("[ERROR] Could not open file \r\n");
         SDCardAvailable = 0;
-        //while (true);
+        while (true);
         return 1;
     }
 
@@ -326,7 +332,7 @@ int nonVolatileWrite(char* name, void* content, int size)
         serialWriteString("[ERROR] Could not write to file \r\n");
         f_close(&fil);
         SDCardAvailable = 0;
-        //while (true);
+        while (true);
         return 1;
     }
 
@@ -335,7 +341,7 @@ int nonVolatileWrite(char* name, void* content, int size)
     if (fr != FR_OK) {
         serialWriteString("[ERROR] Could not close file \r\n");
         SDCardAvailable = 0;
-        //while (true);
+        while (true);
         return 1;
     }
 
