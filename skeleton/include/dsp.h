@@ -1,7 +1,7 @@
 #ifndef DSP_H_
 #define DSP_H_
 
-#define ARREYSIZE(x)  (sizeof(x) / sizeof((x)[0]))
+#define ARRAYSIZE(x)  (sizeof(x) / sizeof((x)[0]))
 #define FLOAT_TO_INT(x) ((x)>=0?(int)((x)+0.5):(int)((x)-0.5))
 
 #define MIN(a,b) (((a)<(b))?(a):(b))

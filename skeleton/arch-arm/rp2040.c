@@ -8,6 +8,8 @@
 #include <inttypes.h>
 #include <string.h>
 
+#include "pioSerial.h"
+
 #include "hardware/regs/rosc.h"
 #include "hardware/regs/addressmap.h"
 #include "pico/stdlib.h"
@@ -16,9 +18,14 @@
 #include "logger.h"
 #include "arch.h"
 
-uint64_t getTime()
+uint64_t getMicrosecTime()
 {
     return time_us_64();
+}
+
+uint64_t getMillisTime()
+{
+    return time_us_64() / 1000;
 }
 
 void hardwareSchedulerRun()
@@ -26,13 +33,12 @@ void hardwareSchedulerRun()
     watchdog_update();
 }
 
-void getDataTime(char* buffer)
+void getFormattedTime(char* formattedTime)
 {
     datetime_t t;
     
     rtc_get_datetime(&t);
-    datetime_to_str(buffer, 64, &t);
-
+    datetime_to_str(formattedTime, 64, &t);
 }
 
 uint32_t rnd(void)
@@ -92,7 +98,7 @@ void initDrivers()
 
 static uint8_t SDCardAvailable = 1;
 
-int fileWrite(char* filename, char *message)
+int textFileWrite(char* filename, char* content, uint8_t mode)
 {
     FRESULT fr;
     FIL fil;
@@ -101,39 +107,40 @@ int fileWrite(char* filename, char *message)
 
     if(SDCardAvailable == 0)
     {
-        writeString("[ERROR] No SD CARD write possible - Please, insert SDCARD and reboot the system ! \r\n");
+        serialWriteString("[ERROR] No SD CARD write possible - Please, insert SDCARD and reboot the system ! \r\n");
         return 1;
     }
 
 
     // Initialize SD card
     if (!sd_init_driver()) {
-        writeString("[ERROR] Could not initialize SD card, SPI Driver failure \r\n");
+        serialWriteString("[ERROR] Could not initialize SD card, SPI Driver failure \r\n");
         while (true);
     }
 
     // Mount drive
     fr = f_mount(&fs, "0:", 1);
     if (fr != FR_OK) {
-        writeString("[ERROR] Could not mount filesystem \r\n");
+        serialWriteString("[ERROR] Could not mount filesystem \r\n");
         SDCardAvailable = 0;
         //while (true);
         return 1;
     }
 
     // Open file for writing ()
-    fr = f_open(&fil, filename, FA_WRITE | FA_OPEN_APPEND);
+    // fr = f_open(&fil, filename, FA_WRITE | FA_OPEN_APPEND);
+    fr = f_open(&fil, filename, FA_WRITE | ((mode == APPEND) ? FA_OPEN_APPEND : FA_OPEN_ALWAYS));
     if (fr != FR_OK) {
-        writeString("[ERROR] Could not open file \r\n");
+        serialWriteString("[ERROR] Could not open file \r\n");
         SDCardAvailable = 0;
         //while (true);
         return 1;
     }
 
     // Write something to file
-    ret = f_printf(&fil, message);
+    ret = f_printf(&fil, content);
     if (ret < 0) {
-        writeString("[ERROR] Could not write to file \r\n");
+        serialWriteString("[ERROR] Could not write to file \r\n");
         f_close(&fil);
         SDCardAvailable = 0;
         //while (true);
@@ -143,10 +150,198 @@ int fileWrite(char* filename, char *message)
     // Close file
     fr = f_close(&fil);
     if (fr != FR_OK) {
-        writeString("[ERROR] Could not close file \r\n");
+        serialWriteString("[ERROR] Could not close file \r\n");
         SDCardAvailable = 0;
         //while (true);
         return 1;
     }
 
+    return 0;
 }
+
+int textFileRead(char* filename, char* content)
+{
+    FRESULT fr;
+    FIL fil;
+    FATFS fs;
+    int ret;
+
+    if(SDCardAvailable == 0)
+    {
+        serialWriteString("[ERROR] No SD CARD read possible - Please, insert SDCARD and reboot the system ! \r\n");
+        return 1;
+    }
+
+
+    // Initialize SD card
+    if (!sd_init_driver()) {
+        serialWriteString("[ERROR] Could not initialize SD card, SPI Driver failure \r\n");
+        while (true);
+    }
+
+    // Mount drive
+    fr = f_mount(&fs, "0:", 1);
+    if (fr != FR_OK) {
+        serialWriteString("[ERROR] Could not mount filesystem \r\n");
+        SDCardAvailable = 0;
+        //while (true);
+        return 1;
+    }
+
+    // Open file for reading
+    fr = f_open(&fil, filename, FA_READ);
+    if (fr != FR_OK) {
+        serialWriteString("[ERROR] Could not open file \r\n");
+        SDCardAvailable = 0;
+        //while (true);
+        return 1;
+    }
+
+    uint64_t size = f_size(fp);
+
+    // read the whole file
+    fr = f_read(&fil, content, size, &ret);
+    if (fr != FR_OK) {
+        serialWriteString("[ERROR] Could not read th file \r\n");
+        f_close(&fil);
+        SDCardAvailable = 0;
+        //while (true);
+        return 1;
+    }
+
+    // Close file
+    fr = f_close(&fil);
+    if (fr != FR_OK) {
+        serialWriteString("[ERROR] Could not close file \r\n");
+        SDCardAvailable = 0;
+        //while (true);
+        return 1;
+    }
+
+    return 0;
+}
+
+int nonVolatileRead(char* name, void* content, int size)
+{
+    // now non volatile is on sd card
+
+    FRESULT fr;
+    FIL fil;
+    FATFS fs;
+    int ret;
+
+    if(SDCardAvailable == 0)
+    {
+        serialWriteString("[ERROR] No SD CARD read possible - Please, insert SDCARD and reboot the system ! \r\n");
+        return 1;
+    }
+
+
+    // Initialize SD card
+    if (!sd_init_driver()) {
+        serialWriteString("[ERROR] Could not initialize SD card, SPI Driver failure \r\n");
+        while (true);
+    }
+
+    // Mount drive
+    fr = f_mount(&fs, "0:", 1);
+    if (fr != FR_OK) {
+        serialWriteString("[ERROR] Could not mount filesystem \r\n");
+        SDCardAvailable = 0;
+        //while (true);
+        return 1;
+    }
+
+    // Open file for reading
+    fr = f_open(&fil, filename, FA_READ);
+    if (fr != FR_OK) {
+        serialWriteString("[ERROR] Could not open file \r\n");
+        SDCardAvailable = 0;
+        //while (true);
+        return 1;
+    }
+
+    fr = f_read(&fil, content, size, &ret);
+    if (fr != FR_OK) {
+        serialWriteString("[ERROR] Could not read th file \r\n");
+        f_close(&fil);
+        SDCardAvailable = 0;
+        //while (true);
+        return 1;
+    }
+
+    // Close file
+    fr = f_close(&fil);
+    if (fr != FR_OK) {
+        serialWriteString("[ERROR] Could not close file \r\n");
+        SDCardAvailable = 0;
+        //while (true);
+        return 1;
+    }
+
+    return 0;
+}
+
+int nonVolatileWrite(char* name, void* content, int size)
+{
+    FRESULT fr;
+    FIL fil;
+    FATFS fs;
+    int ret;
+
+    if(SDCardAvailable == 0)
+    {
+        serialWriteString("[ERROR] No SD CARD write possible - Please, insert SDCARD and reboot the system ! \r\n");
+        return 1;
+    }
+
+
+    // Initialize SD card
+    if (!sd_init_driver()) {
+        serialWriteString("[ERROR] Could not initialize SD card, SPI Driver failure \r\n");
+        while (true);
+    }
+
+    // Mount drive
+    fr = f_mount(&fs, "0:", 1);
+    if (fr != FR_OK) {
+        serialWriteString("[ERROR] Could not mount filesystem \r\n");
+        SDCardAvailable = 0;
+        //while (true);
+        return 1;
+    }
+
+    // Open file for writing ()
+    fr = f_open(&fil, filename, FA_WRITE | FA_CREATE_ALWAYS);
+    if (fr != FR_OK) {
+        serialWriteString("[ERROR] Could not open file \r\n");
+        SDCardAvailable = 0;
+        //while (true);
+        return 1;
+    }
+
+    // Write something to file
+    fr = f_write(&fil, content, size, &ret);
+    if (fr != FR_OK) {
+        serialWriteString("[ERROR] Could not write to file \r\n");
+        f_close(&fil);
+        SDCardAvailable = 0;
+        //while (true);
+        return 1;
+    }
+
+    // Close file
+    fr = f_close(&fil);
+    if (fr != FR_OK) {
+        serialWriteString("[ERROR] Could not close file \r\n");
+        SDCardAvailable = 0;
+        //while (true);
+        return 1;
+    }
+
+    return 0;
+}
+
+void arch_exit(int code, char* msg_format, ...)
+{}
+

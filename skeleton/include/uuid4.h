@@ -10,7 +10,7 @@ void uuid4_generate(char *dst);
 #define UUID4_INIT() \
 	uuid4_init()
 
-#define UUID4_GEN(A) \
-	uuid4_generate(A)
+#define UUID4_GEN(DEST) \
+	uuid4_generate(DEST)
 
 #endif

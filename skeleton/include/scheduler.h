@@ -19,13 +19,17 @@ extern int process_attach(uint32_t period, void *function); // period is microse
 extern int process_detach(uint16_t pid);
 extern int scheduler();
 
+#define MILLISECONDS 1000
+#define SECONDS 1000 * MILLISECONDS
+#define MINUTES 60 * SECONDS
+
 #define RUN() \
 	scheduler()
 
-#define PROCESS_ATTACH(A, B) \
-	process_attach(A, B)
+#define PROCESS_ATTACH(PID, NAME) \
+	process_attach(PID, NAME)
 
-#define PROCESS_DETACH(A) \
-	process_detach(A)
+#define PROCESS_DETACH(PID) \
+	process_detach(PID)
 
 #endif // !SCHEDULER_H_

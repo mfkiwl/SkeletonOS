@@ -24,7 +24,9 @@ if (PLATFORM STREQUAL linux)
 
 
 elseif(PLATFORM STREQUAL arm) # RP2040
-
+    
+    include_directories(arch-arm)
+    
     set(SKELETON_SCHEDULER_MAX_PROCESSES 32)
 
     set(SOURCES

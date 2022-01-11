@@ -16,12 +16,12 @@ void initPIOSERIAL()
     uart_tx_program_init(pio, sm, offset, PIO_TX_GPIO, PIO_BAUD);
 }
 
-void writeString(const char* string)
+void serialWriteString(const char* string)
 {
     uart_tx_program_puts(pio, sm, string);
 }
 
-void writeChar(const char ch)
+void serialWriteChar(const char ch)
 {
     uart_tx_program_putc(pio, sm, ch);
 }
