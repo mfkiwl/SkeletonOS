@@ -22,9 +22,8 @@ MD Syntax Guide: https://www.markdownguide.org/basic-syntax/
 ## Architecture
 
 Available architectures:
-- Linux (x86_64)
-- Arduino MCU (to do)
-- RP2040 (to doing)
+- Linux 
+- RP2040
 
 ## MacOS
 
@@ -226,6 +225,8 @@ Configure toolchain, steps:
 2. Configure CMake Tools. Click Yes.
 3. Select the arm-none-eabi option.
 
+#### Only for test 
+
 Now, create the launch.json and settings.json files inside the .vscode directory of your project. 
 Since I am using the pico-examples directory as my project, I will create the files in there.
 ```
@@ -255,24 +256,20 @@ The debugger will stop on main() function and you can now step through the code.
 
 ![alt text](https://andrejacobs.org/wp-content/uploads/2021/07/Pico13.png)
 
-### Compile and Run (MacOS)
+
+### Compile and Run (MacOS env for RP2040)
 On your Terminal: 
 ```
-git clone https://github.com/VashTheProgrammer/Skeleton/
-cd Skeleton
-mkdir build
-cd build
-cmake -D_BUILD_TYPE="macos" ..
-make
-./skeleton
+$ git clone https://github.com/VashTheProgrammer/Skeleton/
 ```
+go on VSC, open Skeleton folder, setup the project with GCC arm toolchain and ...
 that's it!
 
 ## Linux
 
 ### Requirements
 ```
-apt install texinfo build-essential manpages-dev make
+$ apt install texinfo build-essential manpages-dev make
 ```
 Miss information, please!
 
@@ -295,6 +292,14 @@ Function returns (int):
  - (0)   -> Success
  - (-1)  -> Error
 <br/><br/>
+
+### Serial (minicom)
+
+For MacOS:
+```
+$ minicom -D /dev/tty.usbmodemXXXXX -b 115200
+```
+Exit to minicom: esc + z
 
 ### Main (main.c)
 
