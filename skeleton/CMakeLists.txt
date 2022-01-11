@@ -16,7 +16,6 @@ if (PLATFORM STREQUAL linux)
 
     add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -O0)
     
-
     # libSkeleton is always created 
     add_library(Skeleton STATIC ${SOURCES} ${ARCH})
 
@@ -27,6 +26,8 @@ if (PLATFORM STREQUAL linux)
 elseif(PLATFORM STREQUAL arm) # RP2040
     
     include_directories(arch-arm)
+
+    set(SKELETON_SCHEDULER_MAX_PROCESSES 16)
 
     add_executable(skeleton ${MAIN} ${SOURCES} ${ARCH})
 
