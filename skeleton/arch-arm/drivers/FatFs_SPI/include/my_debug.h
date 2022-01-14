@@ -11,6 +11,7 @@ under the License is distributed on an AS IS BASIS, WITHOUT WARRANTIES OR
 CONDITIONS OF ANY KIND, either express or implied. See the License for the 
 specific language governing permissions and limitations under the License.
 */
+/*
 #pragma once
 
 #include <stdio.h>
@@ -32,8 +33,9 @@ extern "C" {
 //#if defined(DEBUG) && !defined(NDEBUG)
 #define DBG_PRINTF my_printf
 //#else
-//#define DBG_PRINTF(fmt, args...) /* Don't do anything in release builds*/
+//#define DBG_PRINTF(fmt, args...) 
 //#endif
 
 #define myASSERT(__e) \
     ((__e) ? (void)0 : my_assert_func(__FILE__, __LINE__, __func__, #__e))
+*/
