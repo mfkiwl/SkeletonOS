@@ -18,6 +18,8 @@ if (PLATFORM STREQUAL linux)
     
     # libSkeleton is always created 
     add_library(Skeleton STATIC ${SOURCES} ${ARCH})
+    target_link_libraries(Skeleton m)
+    target_include_directories(Skeleton INTERFACE include)
 
     add_executable(skeleton ${MAIN})
 
@@ -59,6 +61,6 @@ elseif(PLATFORM STREQUAL arm) # RP2040
 
 endif()
 
-configure_file(config/cmake.h.in ${CMAKE_BINARY_DIR}/generated/cmake.h)
+configure_file(config/cmake.h.in ${CMAKE_CURRENT_BINARY_DIR}/generated/cmake.h)
 
-include_directories( ${CMAKE_BINARY_DIR}/generated/ ) # Make sure it can be included...
+include_directories( ${CMAKE_CURRENT_BINARY_DIR}/generated/ ) # Make sure it can be included...
