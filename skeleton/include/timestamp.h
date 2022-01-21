@@ -3,6 +3,6 @@
 
 #include "arch.h"
 
-#define GET_TIMESTAMP getMillisTime()
+#define GET_TIMESTAMP() getMillisTime()
 
 #endif
