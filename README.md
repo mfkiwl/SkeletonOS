@@ -1,4 +1,4 @@
-# Skeleton
+# SkeletonOS
 
 ## Idea
 
