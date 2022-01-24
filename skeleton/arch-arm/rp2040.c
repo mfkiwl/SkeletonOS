@@ -12,10 +12,12 @@
 
 #include "hardware/regs/rosc.h"
 #include "hardware/regs/addressmap.h"
+#include "pico/multicore.h"
 #include "pico/stdlib.h"
 #include "ff.h"
 #include "sd_card.h"
 #include "logger.h"
+#include "scheduler.h"
 #include "arch.h"
 
 uint64_t getMicrosecTime()
@@ -92,6 +94,8 @@ void initDrivers()
 
 	initPIOSERIAL();
     rtcInit();
+
+    multicore_launch_core1(dspRun);
 
     sleep_ms(100);
 }
