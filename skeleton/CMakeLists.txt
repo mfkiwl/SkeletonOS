@@ -13,6 +13,7 @@ file(GLOB SOURCES
 if (PLATFORM STREQUAL linux)
 
     set(SKELETON_SCHEDULER_MAX_PROCESSES 64)
+    set(SKELETON_SCHEDULER_MAX_CORE 4)
 
     add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -O0)
     
@@ -30,6 +31,7 @@ elseif(PLATFORM STREQUAL arm) # RP2040
     include_directories(arch-arm)
 
     set(SKELETON_SCHEDULER_MAX_PROCESSES 16)
+    set(SKELETON_SCHEDULER_MAX_CORE 2)
 
     add_executable(skeleton ${MAIN} ${SOURCES} ${ARCH})
 

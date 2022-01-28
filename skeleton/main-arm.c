@@ -37,7 +37,6 @@ struct Config
 };
 struct Config config;
 
-
 void internalConfigInit()
 {
 	CONFIG_READ_INTEGER("LFGeneratorMax", &config.LFGeneratorMax);
@@ -46,7 +45,6 @@ void internalConfigInit()
 	CONFIG_READ_INTEGER("HFPopAndComputeStatisticsLowfiltercut", &config.HFPopAndComputeStatisticsLowfiltercut);
 	CONFIG_READ_INTEGER("HFPopAndComputeStatisticsNyquistcond", &config.HFPopAndComputeStatisticsNyquistcond);
 }
-
 
 circ_gbuf_t cBufHFData;
 circ_gbuf_t cBufLFData;
@@ -256,9 +254,13 @@ int LFPopAndComputeStatistics(uint8_t pid)
 #define HF_POP_PERIOD 100 * 1000
 #define LF_POP_PERIOD 100 * 1000
 
+void dspRun()
+{
+    RUN(1);
+}
+
 int main(int argc, char **argv)
 {
-	
 	initDrivers();
 
 	// init logger, specific the path of file, the level where start log and if you want write log in STDOUT or not.
@@ -275,17 +277,16 @@ int main(int argc, char **argv)
 	// reset circular buffer.
 	CIRC_GBUF_FLUSH(cBufHFData); //init cBufHF
 	CIRC_GBUF_FLUSH(cBufLFData); //init cBufLF
-
-	// attach task, set name, set period (us) and set function call
-	PROCESS_ATTACH(100  * 1000, SquareGenerator); // 100 ms
 	
-	PROCESS_ATTACH(LF_GENERATOR_PERIOD, LFGenerator);
-	PROCESS_ATTACH(HF_GENERATOR_PERIOD, HFGenerator);
-	PROCESS_ATTACH(HF_POP_PERIOD, HFPopAndComputeStatistics);
-	PROCESS_ATTACH(LF_POP_PERIOD, LFPopAndComputeStatistics);
+	PROCESS_ATTACH(0, LF_GENERATOR_PERIOD, LFGenerator);
+	PROCESS_ATTACH(0, HF_GENERATOR_PERIOD, HFGenerator);
+	PROCESS_ATTACH(0, HF_POP_PERIOD, HFPopAndComputeStatistics);
+	PROCESS_ATTACH(0, LF_POP_PERIOD, LFPopAndComputeStatistics);
+
+	PROCESS_ATTACH(1, 25 * 1000, SquareGenerator);
 
 	// scheduler, while(1) handle the tasks
-	RUN();
+	RUN(0);
 
 	return 0;
 }
