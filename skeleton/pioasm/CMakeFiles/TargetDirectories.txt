@@ -1,0 +1,3 @@
+/Users/adrianocostanzo/Dev/skeleton/skeleton/pioasm/CMakeFiles/pioasm.dir
+/Users/adrianocostanzo/Dev/skeleton/skeleton/pioasm/CMakeFiles/edit_cache.dir
+/Users/adrianocostanzo/Dev/skeleton/skeleton/pioasm/CMakeFiles/rebuild_cache.dir

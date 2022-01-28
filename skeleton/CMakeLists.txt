@@ -39,6 +39,7 @@ elseif(PLATFORM STREQUAL arm) # RP2040
     pico_enable_stdio_uart(skeleton 0)
 
     add_subdirectory(arch-arm/drivers/FatFs_SPI build)
+    add_subdirectory(arch-arm/drivers/pioSerial)
 
     # pull in common dependencies
     target_link_libraries(skeleton
@@ -54,6 +55,7 @@ elseif(PLATFORM STREQUAL arm) # RP2040
         hardware_spi
         pico_multicore
         FatFs_SPI
+        pioSerial
     )
 
     # create map/bin/hex file etc.
