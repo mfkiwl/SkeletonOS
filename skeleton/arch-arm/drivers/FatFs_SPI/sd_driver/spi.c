@@ -196,7 +196,7 @@ bool my_spi_init(spi_t *pSPI) {
             dma_channel_set_irq0_enabled(pSPI->rx_dma, true);
         }
         irq_set_enabled(irq, true);
-        LED_INIT();
+
         pSPI->initialized = true;
         spi_unlock(pSPI);
     }

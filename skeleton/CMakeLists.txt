@@ -2,8 +2,6 @@ set(SKELETON_VERSION v1.0)
 
 include_directories(include)
 
-file(GLOB ARCH arch-${PLATFORM}/*.c)
-
 set(MAIN main-${PLATFORM}.c)
 
 file(GLOB SOURCES
@@ -14,6 +12,8 @@ if (PLATFORM STREQUAL linux)
 
     set(SKELETON_SCHEDULER_MAX_PROCESSES 64)
     set(SKELETON_SCHEDULER_MAX_CORE 4)
+
+    file(GLOB ARCH arch-${PLATFORM}/*.c)
 
     add_compile_options(-Wall -Wno-unused-variable -Wno-unused-function -O0)
     
@@ -28,7 +28,9 @@ if (PLATFORM STREQUAL linux)
 
 elseif(PLATFORM STREQUAL arm) # RP2040
     
-    include_directories(arch-arm)
+    # creata BOARDS choice with env var
+    include_directories(arch-arm/rp2040/)
+    file(GLOB ARCH arch-${PLATFORM}/rp2040.c)
 
     set(SKELETON_SCHEDULER_MAX_PROCESSES 16)
     set(SKELETON_SCHEDULER_MAX_CORE 2)
@@ -42,6 +44,7 @@ elseif(PLATFORM STREQUAL arm) # RP2040
 
     add_subdirectory(arch-arm/drivers/FatFs_SPI build)
     add_subdirectory(arch-arm/drivers/pioSerial)
+    add_subdirectory(arch-arm/drivers/esp32)
 
     # pull in common dependencies
     target_link_libraries(skeleton
@@ -58,6 +61,7 @@ elseif(PLATFORM STREQUAL arm) # RP2040
         pico_multicore
         FatFs_SPI
         pioSerial
+        esp32
     )
 
     # create map/bin/hex file etc.

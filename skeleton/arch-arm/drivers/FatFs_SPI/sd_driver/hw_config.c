@@ -34,6 +34,8 @@ socket, which SPI it is driven by, and how it is wired.
 #include "ff.h" /* Obtains integer types */
 //
 #include "diskio.h" /* Declarations of disk functions */
+//
+#include "boards.h" /* Declarations of disk functions */
 
 void spi0_dma_isr();
 
@@ -42,14 +44,14 @@ void spi0_dma_isr();
 // selects.
 static spi_t spis[] = {  // One for each SPI.
     {
-        .hw_inst = spi0,  // SPI component
-        .miso_gpio = 16, // GPIO number (not pin number)
-        .mosi_gpio = 19,
-        .sck_gpio = 18,
+        .hw_inst = SPI_SDCARD_BUS,  // SPI component
+        .miso_gpio = GPIO_SPI_SDCARD_MISO, // GPIO number (not pin number)
+        .mosi_gpio = GPIO_SPI_SDCARD_MOSI,
+        .sck_gpio = GPIO_SPI_SDCARD_SCK,
         /* The choice of SD card matters! SanDisk runs at the highest speed. PNY
            can only mangage 5 MHz. Those are all I've tried. */
         //.baud_rate = 1000 * 1000,
-        .baud_rate = 12500 * 1000,  // The limitation here is SPI slew rate.
+        .baud_rate = SPI_SDCARD_BAUD,  // The limitation here is SPI slew rate.
         //.baud_rate = 25 * 1000 * 1000, // Actual frequency: 20833333. Has
         // worked for me with SanDisk.
 
@@ -63,9 +65,9 @@ static spi_t spis[] = {  // One for each SPI.
 static sd_card_t sd_cards[] = {  // One for each SD card
     {
         .pcName = "0:",           // Name used to mount device
-        .spi = &spis[0],          // Pointer to the SPI driving this card
-        .ss_gpio = 17,            // The SPI slave select GPIO for this SD card
-        .card_detect_gpio = 22,   // Card detect
+        .spi = &spis[SPI_SDCARD_ENUM],          // Pointer to the SPI driving this card
+        .ss_gpio = GPIO_SDCARD_CS,            // The SPI slave select GPIO for this SD card
+        .card_detect_gpio = GPIO_SDCARD_CD,   // Card detect
         .card_detected_true = 1,  // What the GPIO read returns when a card is
                                   // present. Use -1 if there is no card detect.
         // Following attributes are dynamically assigned

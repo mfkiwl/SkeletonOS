@@ -49,12 +49,10 @@ static void sd_spi_select(sd_card_t *pSD) {
     // A fill byte seems to be necessary, sometimes:
     uint8_t fill = SPI_FILL_CHAR;
     spi_write_blocking(pSD->spi->hw_inst, &fill, 1);
-    LED_ON();
 }
 
 static void sd_spi_deselect(sd_card_t *pSD) {
     gpio_put(pSD->ss_gpio, 1);
-    LED_OFF();
     /*
     MMC/SDC enables/disables the DO output in synchronising to the SCLK. This
     means there is a posibility of bus conflict with MMC/SDC and another SPI

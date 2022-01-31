@@ -19,6 +19,7 @@
 #include "logger.h"
 #include "scheduler.h"
 #include "arch.h"
+#include "boards.h"
 
 uint64_t getMicrosecTime()
 {
@@ -80,7 +81,7 @@ static uint8_t blink;
 
 int SquareGenerator(int pid)
 {
-    gpio_put(25, blink);
+    gpio_put(GPIO_LED_SYSTEM, blink);
     blink = !blink;
 
 	return 0;
@@ -89,15 +90,15 @@ int SquareGenerator(int pid)
 void initDrivers()
 {
     stdio_init_all();
-	gpio_init(25);
-    gpio_set_dir(25, GPIO_OUT);
+	gpio_init(GPIO_LED_SYSTEM);
+    gpio_set_dir(GPIO_LED_SYSTEM, GPIO_OUT);
 
 	initPIOSERIAL();
     rtcInit();
 
     multicore_launch_core1(dspRun);
 
-    sleep_ms(100);
+    sleep_ms(100); // safety configure
 }
 
 static uint8_t SDCardAvailable = 1;

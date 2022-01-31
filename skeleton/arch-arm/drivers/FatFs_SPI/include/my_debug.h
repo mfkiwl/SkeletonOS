@@ -36,5 +36,4 @@ extern "C" {
 //#define DBG_PRINTF(fmt, args...) 
 //#endif
 
-#define myASSERT(__e) \
-    ((__e) ? (void)0 : my_assert_func(__FILE__, __LINE__, __func__, #__e))
+#define myASSERT(__e) ((__e) ? (void)0 : my_assert_func(__FILE__, __LINE__, __func__, #__e))

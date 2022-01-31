@@ -62,24 +62,3 @@ void set_spi_dma_irq_channel(bool useChannel1, bool shared);
 #ifdef __cplusplus
 }
 #endif
-
-#ifndef NO_PICO_LED
-#  define USE_LED 1
-#endif
-
-#if USE_LED
-#  define LED_PIN 25
-#  define LED_INIT()                     \
-    {                                    \
-        gpio_init(LED_PIN);              \
-        gpio_set_dir(LED_PIN, GPIO_OUT); \
-    }
-#  define LED_ON() gpio_put(LED_PIN, 1)
-#  define LED_OFF() gpio_put(LED_PIN, 0)
-#else
-#  define LED_ON()
-#  define LED_OFF()
-#  define LED_INIT()
-#endif
-
-/* [] END OF FILE */

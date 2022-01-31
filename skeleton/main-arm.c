@@ -180,13 +180,13 @@ int HFPopAndComputeStatistics(uint8_t pid)
 
 	LOGGER_DEBUG("\
     HF Pop and Compute Statistics Task: \
-    standard deviation:%.5f; \
-    variance:%.5f; \
-    skewness:%.20f; \
-    kurtosis:%.5f; \
-    max:%.5f; \
-    rms:%.5f; \
-    crest factor:%.5f;",
+    standard deviation:%.3f; \
+    variance:%.3f; \
+    skewness:%.3f; \
+    kurtosis:%.3f; \
+    max:%.3f; \
+    rms:%.3f; \
+    crest factor:%.3f;",
 						std, var, ske, kur, max, sqr, cfa);
 
 	return 0;
@@ -239,10 +239,10 @@ int LFPopAndComputeStatistics(uint8_t pid)
 
 	LOGGER_DEBUG("\
     LF Pop and Compute Statistics Task: \
-    avg:%.5f; \
-    avgHistory:%.5f; \
-    max:%.5f; \
-    min:%.5f;",
+    avg:%.3f; \
+    avgHistory:%.3f; \
+    max:%.3f; \
+    min:%.3f;",
 							avg, lfstatistics.avg, max, min);
 
 	return 0;
