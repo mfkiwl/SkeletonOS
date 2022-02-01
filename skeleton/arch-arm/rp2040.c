@@ -20,6 +20,7 @@
 #include "scheduler.h"
 #include "arch.h"
 #include "boards.h"
+#include "esp32.h"
 
 uint64_t getMicrosecTime()
 {
@@ -95,8 +96,11 @@ void initDrivers()
 
 	initPIOSERIAL();
     rtcInit();
+    initESP();
 
     multicore_launch_core1(dspRun);
+
+    espSetup();
 
     sleep_ms(100); // safety configure
 }

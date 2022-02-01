@@ -44,7 +44,7 @@ void spi0_dma_isr();
 // selects.
 static spi_t spis[] = {  // One for each SPI.
     {
-        .hw_inst = SPI_SDCARD_BUS,  // SPI component
+        .hw_inst = spi0,  // SPI component
         .miso_gpio = GPIO_SPI_SDCARD_MISO, // GPIO number (not pin number)
         .mosi_gpio = GPIO_SPI_SDCARD_MOSI,
         .sck_gpio = GPIO_SPI_SDCARD_SCK,
@@ -77,7 +77,7 @@ static sd_card_t sd_cards[] = {  // One for each SD card
     }
 };
 
-void spi0_dma_isr() { spi_irq_handler(&spis[0]); }
+void spi0_dma_isr() { spi_irq_handler(&spis[SPI_SDCARD_ENUM]); }
 
 /* ********************************************************************** */
 size_t sd_get_num() { return count_of(sd_cards); }
