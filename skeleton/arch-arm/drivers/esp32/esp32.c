@@ -10,6 +10,8 @@
 
 #define ESP_CRNL "\r\n"
 
+#define STATION 1
+
 #define DATA_BITS 8
 #define STOP_BITS 1
 #define PARITY    UART_PARITY_NONE
@@ -19,6 +21,8 @@
 #define BAUD_RATE_HIGHSPEED 3686400
 
 #define BUFFER_UART_SIZE 512
+
+#define SENSOR_ID "08:3a:f2:8f:d7:ed/" // WIFI AP MAC ADDR
 
 enum{ESP_RESET = 1, AT_START, AT_BAUDSET, AT_TEST_NEW_BAUD, AT_CONFIG, AT_DATA, AT_TEST, WAIT};
 enum{AT_CONFIG_1 = 11, AT_CONFIG_2, AT_CONFIG_3, AT_CONFIG_4, AT_CONFIG_5, AT_CONFIG_6, AT_CONFIG_7};
@@ -98,13 +102,116 @@ uint8_t espSetup()
         case AT_START:
         {
             //LED_GREEN_FADE(); // led event !
+            uart_puts(uart1, "AT"ESP_CRNL);  
 
-            uart_puts(uart1, "AT"ESP_CRNL);         
             request = AT_BAUDSET;
             ret = AT_START;
             
             break;
         }
+
+        case AT_BAUDSET:
+        {
+            uart_puts(uart1, "AT+UART_CUR="BAUD_RATE_HIGHSPEED_S",8,1,0,3"ESP_CRNL); // ESP32    
+
+            request = AT_TEST_NEW_BAUD;       
+            ret = AT_BAUDSET;
+            
+            break;
+        }
+
+        case AT_TEST_NEW_BAUD:
+        {
+            uart_set_baudrate(uart1, BAUD_RATE_HIGHSPEED);  
+            //uart_puts(UART_ESP_ID, "AT+CWAUTOCONN=1"ESP_CRNL); // default is 1 and its fine !
+            uart_puts(uart1, "AT"ESP_CRNL);  
+
+            request = AT_CONFIG_1;       
+            ret = AT_TEST_NEW_BAUD;
+
+            break;
+        }
+
+        case AT_CONFIG_1:
+        {
+            uart_puts(uart1, "ATE0"ESP_CRNL); // echo off
+
+            request = AT_CONFIG_2;    
+            ret = AT_CONFIG_1;
+
+            break;
+        }
+
+        case AT_CONFIG_2:
+        {
+            #if STATION
+                uart_puts(uart1, "AT+CWMODE=1"ESP_CRNL); // STATION MODE
+            #endif
+
+             #if AP
+                uart_puts(uart1, "AT+CWMODE=2"ESP_CRNL); // AP MODE
+            #endif   
+
+            request = AT_CONFIG_3;
+            ret = AT_CONFIG_2;
+
+            break;
+        }
+
+        case AT_CONFIG_3:
+        {
+            #if STATION
+                uart_puts(uart1, "AT+CWJAP=\"WSensorAP-U2\",\"pippopluto69\""ESP_CRNL); // only station mode
+            #endif
+
+            request = AT_CONFIG_4;
+            ret = AT_CONFIG_3;
+
+            break;
+        }
+
+        case AT_CONFIG_4:
+        {
+            #if STATION
+                uart_puts(uart1, "AT+CWRECONNCFG=5,10"ESP_CRNL); // try to reply connection 5 sec for 10 times
+            #endif
+
+            request = AT_CONFIG_5;
+            ret = AT_CONFIG_4;
+
+            break;
+        }
+
+        case AT_CONFIG_5:
+        {
+            uart_puts(uart1, "AT+MQTTUSERCFG=0,1,\""SENSOR_ID"\",\"user\",\"pass\",0,0,\"\""ESP_CRNL);  
+
+            request = AT_CONFIG_6;
+            ret = AT_CONFIG_5;
+
+            break;
+        }
+
+        case AT_CONFIG_6:
+        {
+            uart_puts(uart1, "AT+MQTTCONN=0,\"10.42.0.1\",10000,1"ESP_CRNL); // application address
+
+            request = WAIT;
+            ret = AT_CONFIG_6;
+
+            sleep_ms(2000); // OCCHIO !
+
+            break;
+        }
+
+        case WAIT:
+        {
+            request = WAIT;
+            ret = WAIT;
+
+            break;
+        }
+
         
         default:
         {

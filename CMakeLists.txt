@@ -44,8 +44,3 @@ else() # RP2040 SDK
     )
 
 endif()
-
-execute_process (
-    COMMAND bash -c "mkdir ../log"
-    COMMAND bash -c "mkdir ../data"
-) 

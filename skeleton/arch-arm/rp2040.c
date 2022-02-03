@@ -24,12 +24,18 @@
 
 uint64_t getMicrosecTime()
 {
-    return time_us_64();
+    uint64_t tmp;
+    tmp = time_us_64();
+
+    return tmp;
 }
 
 uint64_t getMillisTime()
 {
-    return time_us_64() / 1000;
+    uint64_t tmp;
+    tmp = time_us_64() / 1000;
+
+    return tmp;
 }
 
 void hardwareSchedulerRun()
@@ -120,7 +126,6 @@ int textFileWrite(char* filename, char* content, uint8_t mode)
         return 1;
     }
 
-
     // Initialize SD card
     if (!sd_init_driver()) {
         serialWriteString("[ERROR] Could not initialize SD card, SPI Driver failure \r\n");
@@ -132,7 +137,7 @@ int textFileWrite(char* filename, char* content, uint8_t mode)
     if (fr != FR_OK) {
         serialWriteString("[ERROR] Could not mount filesystem \r\n");
         SDCardAvailable = 0;
-        //while (true);
+        while (true);
         return 1;
     }
 
@@ -180,7 +185,6 @@ int textFileRead(char* filename, char* content)
         serialWriteString("[ERROR] No SD CARD read possible - Please, insert SDCARD and reboot the system ! \r\n");
         return 1;
     }
-
 
     // Initialize SD card
     if (!sd_init_driver()) {
@@ -232,8 +236,6 @@ int textFileRead(char* filename, char* content)
 
 int nonVolatileRead(char* name, void* content, int size)
 {
-    // now non volatile is on sd card
-
     FRESULT fr;
     FIL fil;
     FATFS fs;
@@ -244,7 +246,6 @@ int nonVolatileRead(char* name, void* content, int size)
         serialWriteString("[ERROR] No SD CARD read possible - Please, insert SDCARD and reboot the system ! \r\n");
         return 1;
     }
-
 
     // Initialize SD card
     if (!sd_init_driver()) {
@@ -309,7 +310,6 @@ int nonVolatileWrite(char* name, void* content, int size)
         serialWriteString("[ERROR] No SD CARD write possible - Please, insert SDCARD and reboot the system ! \r\n");
         return 1;
     }
-
 
     // Initialize SD card
     if (!sd_init_driver()) {

@@ -26,6 +26,11 @@ if (PLATFORM STREQUAL linux)
 
     target_link_libraries(skeleton m Skeleton)
 
+    execute_process (
+    COMMAND bash -c "mkdir ${CMAKE_CURRENT_BINARY_DIR}/log"
+    COMMAND bash -c "mkdir ${CMAKE_CURRENT_BINARY_DIR}/data"
+    ) 
+
 elseif(PLATFORM STREQUAL arm) # RP2040
     
     # creata BOARDS choice with env var

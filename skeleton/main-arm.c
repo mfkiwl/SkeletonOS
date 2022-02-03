@@ -285,6 +285,9 @@ int main(int argc, char **argv)
 
 	PROCESS_ATTACH(1, 25 * 1000, SquareGenerator);
 
+	#include "esp32.h"
+	PROCESS_ATTACH(1, 2 * 1000 * 1000, espSetup);
+
 	// scheduler, while(1) handle the tasks
 	RUN(0);
 
