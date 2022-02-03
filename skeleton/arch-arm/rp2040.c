@@ -22,6 +22,11 @@
 #include "boards.h"
 #include "esp32.h"
 
+void dspRun()
+{
+    RUN(1);
+}
+
 uint64_t getMicrosecTime()
 {
     uint64_t tmp;
@@ -56,7 +61,7 @@ uint32_t rnd(void)
     int k, random=0;
     volatile uint32_t *rnd_reg=(uint32_t *)(ROSC_BASE + ROSC_RANDOMBIT_OFFSET);
     
-    for(k=0;k<32;k++){
+    for(k=0; k<32; k++){
     
     random = random << 1;
     random = random + (0x00000001 & (*rnd_reg));
@@ -105,8 +110,6 @@ void initDrivers()
     initESP();
 
     multicore_launch_core1(dspRun);
-
-    espSetup();
 
     sleep_ms(100); // safety configure
 }

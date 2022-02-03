@@ -32,7 +32,6 @@ extern uint32_t rnd();
 // drivers
 extern void initDrivers();
 extern int SquareGenerator(int pid);
-extern void dspRun();
 
 // error handling
 extern void arch_exit(int code, char* msg_format, ...);

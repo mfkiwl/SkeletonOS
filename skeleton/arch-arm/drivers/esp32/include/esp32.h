@@ -2,7 +2,7 @@
 #define ESP32_H_
 
 extern void initESP();
-extern uint8_t espSetup();
+extern void espSetup(uint8_t pid);
 
 
 #endif // !ESP32_H_

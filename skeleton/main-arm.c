@@ -254,11 +254,6 @@ int LFPopAndComputeStatistics(uint8_t pid)
 #define HF_POP_PERIOD 100 * 1000
 #define LF_POP_PERIOD 100 * 1000
 
-void dspRun()
-{
-    RUN(1);
-}
-
 int main(int argc, char **argv)
 {
 	initDrivers();

@@ -79,7 +79,7 @@ void initESP()
     gpio_set_dir(GPIO_ESP32_EN, GPIO_OUT);
 }
 
-uint8_t espSetup()
+void espSetup(uint8_t pid)
 {
     uint8_t ret = -1;
 
@@ -101,7 +101,6 @@ uint8_t espSetup()
         
         case AT_START:
         {
-            //LED_GREEN_FADE(); // led event !
             uart_puts(uart1, "AT"ESP_CRNL);  
 
             request = AT_BAUDSET;
@@ -199,7 +198,7 @@ uint8_t espSetup()
             request = WAIT;
             ret = AT_CONFIG_6;
 
-            sleep_ms(2000); // OCCHIO !
+            //sleep_ms(2000); // OCCHIO !
 
             break;
         }
@@ -209,9 +208,10 @@ uint8_t espSetup()
             request = WAIT;
             ret = WAIT;
 
+            //sleep_ms(1); // OCCHIO !
+
             break;
         }
-
         
         default:
         {
@@ -221,5 +221,4 @@ uint8_t espSetup()
 
     }
 
-    return ret;
 }
