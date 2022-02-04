@@ -10,9 +10,11 @@
 #define CBUF_HFDATA_SIZE 8192
 #define CBUF_LFDATA_SIZE 128
 
-#define DATA_FILE_NAME 		"../../data/lfstatistics.data"
-#define LOG_FILE_NAME 		"../../log/main.log"
-#define CONFIG_FILE_NAME 	"../../skeleton/config/common.json"
+#define DATA_FILE_NAME 		"./data/lfstatistics.data"
+#define LOG_FILE_NAME 		"./log/main.log"
+#define CONFIG_FILE_NAME 	"./common.json"
+
+#define MAIN_LINUX_SCHEDULER_INSTANCE 0
 
 struct Element
 {
@@ -276,13 +278,13 @@ int main(int argc, char **argv)
 	CIRC_GBUF_FLUSH(cBufLFData); //init cBufLF
 
 	// attach task, set name, set period (us) and set function call	
-	PROCESS_ATTACH(LF_GENERATOR_PERIOD, LFGenerator);
-	PROCESS_ATTACH(HF_GENERATOR_PERIOD, HFGenerator);
-	PROCESS_ATTACH(HF_POP_PERIOD, HFPopAndComputeStatistics);
-	PROCESS_ATTACH(LF_POP_PERIOD, LFPopAndComputeStatistics);
+	PROCESS_ATTACH(MAIN_LINUX_SCHEDULER_INSTANCE, LF_GENERATOR_PERIOD, LFGenerator);
+	PROCESS_ATTACH(MAIN_LINUX_SCHEDULER_INSTANCE, HF_GENERATOR_PERIOD, HFGenerator);
+	PROCESS_ATTACH(MAIN_LINUX_SCHEDULER_INSTANCE, HF_POP_PERIOD, HFPopAndComputeStatistics);
+	PROCESS_ATTACH(MAIN_LINUX_SCHEDULER_INSTANCE, LF_POP_PERIOD, LFPopAndComputeStatistics);
 
 	// scheduler, while(1) handle the tasks
-	RUN();
+	RUN(MAIN_LINUX_SCHEDULER_INSTANCE);
 
 	return 0;
 }

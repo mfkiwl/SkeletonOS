@@ -27,9 +27,16 @@ if (PLATFORM STREQUAL linux)
     target_link_libraries(skeleton m Skeleton)
 
     execute_process (
-    COMMAND bash -c "mkdir ${CMAKE_CURRENT_BINARY_DIR}/log"
-    COMMAND bash -c "mkdir ${CMAKE_CURRENT_BINARY_DIR}/data"
-    ) 
+        COMMAND bash -c "mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/log"
+        COMMAND bash -c "mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/data"
+    )
+
+    # copy common.json file to build dir in order to run the app
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/config/common.json
+        ${CMAKE_CURRENT_BINARY_DIR}/common.json
+        COPYONLY
+    )
 
 elseif(PLATFORM STREQUAL arm) # RP2040
     
