@@ -13,19 +13,32 @@ typedef struct
 	uint64_t const element_size;
 } circ_gbuf_t;
 
-#define __CIRC_GBUF_V_DEF(type, buf, sz) \
-	type buf##_circ_gbuf_data[sz];       \
-	circ_gbuf_t buf = {                  \
-		.buffer = buf##_circ_gbuf_data,  \
-		.push_count = 0,                 \
-		.pop_count = 0,                  \
-		.size = sz,                      \
-		.element_size = sizeof(type)};
+#define __CIRC_GBUF_V_DEF(type, buf, sz)  \
+	type buf##_circ_gbuf_data[sz];          \
+	circ_gbuf_t buf = {                     \
+		.buffer = buf##_circ_gbuf_data,       \
+		.push_count = 0,                      \
+		.pop_count = 0,                       \
+		.size = sz,                           \
+		.element_size = sizeof(type)          \
+  };
 
 extern int __circ_gbuf_push(circ_gbuf_t *circ_gbuf, void *elem);
 extern int __circ_gbuf_pop(circ_gbuf_t *circ_gbuf, void *elem, uint16_t read_only);
 extern int __circ_gbuf_free_space(circ_gbuf_t *circ_gbuf);
 /* -------------------------------------------------------------------------- */
+
+
+#define __CIRC_GBUF_ACC_DEF(type, buf, sz)                               \
+int buf##_push_refd(type *pt) { return __circ_gbuf_push(&buf, pt); }     \
+int buf##_pop_refd(type *pt) { return __circ_gbuf_pop(&buf, pt, 0); }    \
+int buf##_peek_refd(type *pt) { return __circ_gbuf_pop(&buf, pt, 1); }   \
+
+#define CIRC_GBUF_EXPORT(type, buf, sz)   \
+extern circ_gbuf_t buf;										\
+extern int buf##_push_refd(type *pt);     \
+extern int buf##_pop_refd(type *pt);      \
+extern int buf##_peek_refd(type *pt);     \
 
 /**
  * Description:
@@ -42,20 +55,9 @@ extern int __circ_gbuf_free_space(circ_gbuf_t *circ_gbuf);
  *   CIRC_GBUF_DEF(uint8_t, byte_buf, 13);
  *   CIRC_GBUF_DEF(struct foo, foo_buf, 10);
  */
-#define CIRC_GBUF_DEF(type, buf, size)       \
-	__CIRC_GBUF_V_DEF(type, buf, size)       \
-	int buf##_push_refd(type *pt)            \
-	{                                        \
-		return __circ_gbuf_push(&buf, pt);   \
-	}                                        \
-	int buf##_pop_refd(type *pt)             \
-	{                                        \
-		return __circ_gbuf_pop(&buf, pt, 0); \
-	}                                        \
-	int buf##_peek_refd(type *pt)            \
-	{                                        \
-		return __circ_gbuf_pop(&buf, pt, 1); \
-	}
+#define CIRC_GBUF_DEF(type, buf, size)    \
+	__CIRC_GBUF_V_DEF(type, buf, size)      \
+	__CIRC_GBUF_ACC_DEF(type, buf, sz)
 
 /**
  * Description:
