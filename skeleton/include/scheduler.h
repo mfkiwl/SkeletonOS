@@ -27,8 +27,8 @@ extern int scheduler(uint8_t instance);
 #define RUN(INSTANCE) \
 	scheduler(INSTANCE)
 
-#define PROCESS_ATTACH(INSTANCE, PID, NAME) \
-	process_attach(INSTANCE, PID, NAME)
+#define PROCESS_ATTACH(INSTANCE, PERIOD, NAME) \
+	process_attach(INSTANCE, PERIOD, NAME)
 
 #define PROCESS_DETACH(INSTANCE, PID) \
 	process_detach(INSTANCE, PID)
