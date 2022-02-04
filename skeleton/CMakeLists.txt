@@ -4,8 +4,13 @@ include_directories(include)
 
 set(MAIN main-${PLATFORM}.c)
 
-file(GLOB SOURCES
-    src/*.c
+set(SOURCES
+    src/cbuf.c
+    src/config.c
+    src/json.c
+    src/logger.c
+    src/scheduler.c
+    src/uuid4.c
 )
 
 if (PLATFORM STREQUAL linux)
@@ -22,7 +27,7 @@ if (PLATFORM STREQUAL linux)
     target_link_libraries(Skeleton m)
     target_include_directories(Skeleton INTERFACE include)
 
-    add_executable(skeleton ${MAIN})
+    add_executable(skeleton ${MAIN} src/dsp.c)
 
     target_link_libraries(skeleton m Skeleton)
 
@@ -47,7 +52,7 @@ elseif(PLATFORM STREQUAL arm) # RP2040
     set(SKELETON_SCHEDULER_MAX_PROCESSES 16)
     set(SKELETON_SCHEDULER_MAX_CORE 2)
 
-    add_executable(skeleton ${MAIN} ${SOURCES} ${ARCH})
+    add_executable(skeleton ${MAIN} ${SOURCES} src/dsp.c ${ARCH})
 
     pico_generate_pio_header(skeleton ${CMAKE_CURRENT_LIST_DIR}/uart_tx.pio)
 
